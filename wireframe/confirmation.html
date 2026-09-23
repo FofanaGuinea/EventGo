@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EventGo — Wireframe — Détail du billet</title>
+<title>EventGo — Wireframe — Confirmation</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/wireframe-theme.css">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../assets/wireframe-theme.css">
 <style>
   .check-circle{width:76px;height:76px;border-radius:50%;border:2px solid #3D3D3D;display:flex;align-items:center;justify-content:center;margin:0 auto;}
-  .ticket-box{border:1px dashed #C9C9C9;border-radius:10px;padding:20px;text-align:center;margin:0 20px;}
+  .ticket-box{border:1px dashed #C9C9C9;border-radius:10px;padding:20px;text-align:center;}
   .qr{width:150px;height:150px;margin:14px auto;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:3px;padding:10px;border:1px solid #C9C9C9;border-radius:8px;}
   .qr i{background:#2B2B2B;border-radius:1px;}
   .qr i.off{background:transparent;}
@@ -22,20 +22,11 @@
 </head>
 <body>
 <div class="screen">
-  <div class="safe-top"></div>
-  <div class="header">
-    <a class="icon-btn" href="w-billets.html" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
-    <span class="header-title">Mon billet</span>
-  </div>
-  <div class="scroll">
-    <div class="pad-x" style="text-align:center;padding-top:4px;"><span class="badge badge-upcoming">À venir</span></div>
-    <div class="pad-x" style="margin-top:14px;">
-      <div class="row" style="gap:12px;border:1px solid #C9C9C9;border-radius:8px;padding:10px;">
-        <div class="card-media" style="width:64px;height:64px;border-radius:6px;flex:0 0 auto;"><div class="ph-media" style="height:64px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5.5-5-9.5 8"/></svg></div></div>
-        <div><div class="card-title" style="font-size:14.5px;">Nuit Acoustique — Kaloum</div><div class="card-meta">Concert</div></div>
-      </div>
-    </div>
-    <div class="ticket-box" style="margin-top:18px;">
+  <div class="scroll pad-x" style="padding-top:60px;text-align:center;">
+    <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke="#3D3D3D" stroke-width="2.2" style="width:34px;height:34px;"><path d="m5 13 4 4 10-10"/></svg></div>
+    <h1 style="font-family:'Sora',sans-serif;font-weight:700;font-size:21px;margin:18px 0 6px;">Réservation confirmée</h1>
+    <p style="font-family:'Manrope',sans-serif;font-size:13.5px;color:#5B5B5B;margin:0 0 22px;">Votre billet a été envoyé par e-mail et SMS.</p>
+    <div class="ticket-box">
       <div style="font-size:12px;color:#7A7A7A;">Référence du billet</div>
       <div style="font-family:'Sora',sans-serif;font-weight:800;font-size:18px;letter-spacing:1px;margin-top:2px;">EVG-2610-7743</div>
       <div class="qr"><i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i>
@@ -51,20 +42,12 @@
         <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Institut Franco-Guinéen, Kaloum</div>
       </div>
     </div>
-    <div class="section-title" style="margin:20px 20px 8px;padding:0;">Organisateur</div>
-    <div class="organizer"><div class="av"><svg viewBox="0 0 24 24" style="width:20px;height:20px;" fill="none" stroke="#7A7A7A" stroke-width="1.6"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg></div><div><div style="font-weight:700;font-size:14px;">Collectif Sons de Kaloum</div><div style="font-size:12px;color:#7A7A7A;">Organisateur vérifié</div></div></div>
-    <div class="pad-x" style="margin-top:18px;">
-      <div class="row" style="justify-content:space-between;border:1px solid #C9C9C9;border-radius:8px;padding:14px;">
-        <span style="font-weight:600;font-size:13.5px;">Rappel avant l'événement</span>
-        <div class="sw on" onclick="toggleSwitch(this)"><div class="knob"></div></div>
-      </div>
-    </div>
-    <div style="height:110px;"></div>
   </div>
   <div class="bottom-bar" style="position:relative;border-top:none;padding-top:0;">
-    <div class="btn btn-secondary" style="display:flex;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;margin-right:8px;" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="M8 10.8 16 6.2M8 13.2l8 4.6"/></svg>Partager le billet</div>
+    <a class="btn btn-primary" href="billets.html" style="display:flex;margin-bottom:12px;">Voir mon billet</a>
+    <a class="btn btn-secondary" href="accueil.html" style="display:flex;">Retour aux événements</a>
   </div>
 </div>
-<script src="assets/app.js"></script>
+<script src="../assets/app.js"></script>
 </body>
 </html>

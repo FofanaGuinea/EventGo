@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EventGo — Wireframe — Détail événement</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/wireframe-theme.css">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../assets/wireframe-theme.css">
 <style>
   .hero{width:100%;height:280px;position:relative;flex:0 0 auto;}
   .hero-actions{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:16px;}
@@ -26,7 +26,7 @@
   <div class="scroll">
     <div class="hero"><div class="ph-media" style="height:280px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5.5-5-9.5 8"/></svg></div>
       <div class="hero-actions">
-        <a class="icon-btn" href="w-accueil.html" style="background:rgba(255,255,255,0.92);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+        <a class="icon-btn" href="accueil.html" style="background:rgba(255,255,255,0.92);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
         <div class="right">
           <button class="icon-btn" style="background:rgba(255,255,255,0.92);" data-on="0" onclick="toggleFav(this,'#3D3D3D')" aria-label="Favori"><svg viewBox="0 0 24 24" fill="none" stroke="#3D3D3D" stroke-width="1.8"><path d="M12 20s-7-4.4-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 5c-2.3 4.6-9.3 9-9.3 9Z"/></svg></button>
           <button class="icon-btn" style="background:rgba(255,255,255,0.92);" onclick="openSheet('share')" aria-label="Partager"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="M8 10.8 16 6.2M8 13.2l8 4.6"/></svg></button>
@@ -55,7 +55,7 @@
   </div>
   <div class="bottom-bar">
     <div class="bottom-bar-row"><span class="bottom-bar-label">À partir de</span><span class="bottom-bar-value" style="">25 000 GNF</span></div>
-    <a class="btn btn-primary" href="w-reservation.html" style="display:flex;">Réserver ma place</a>
+    <a class="btn btn-primary" href="reservation.html" style="display:flex;">Réserver ma place</a>
   </div>
   <div class="share-overlay" onclick="closeSheet('share')" id="share" style="display:none;">
     <div class="share-sheet" onclick="stopProp(event)">
@@ -70,6 +70,6 @@
     </div>
   </div>
 </div>
-<script src="assets/app.js"></script>
+<script src="../assets/app.js"></script>
 </body>
 </html>
