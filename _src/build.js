@@ -36,6 +36,14 @@ function layout({ file, page, nav, title, desc, head = '', scripts = '', main })
 <meta name="description" content="${desc}">
 <meta name="theme-color" content="#E11D33">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="application-name" content="EventGo">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="EventGo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__egPrompt=e});</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
@@ -50,6 +58,7 @@ ${head}
   <div class="nav-actions">
     <a class="icon-btn" href="rappels.html" aria-label="Rappels">${I.bell}<span class="dot hidden" id="remDot"></span></a>
     <a class="icon-btn" href="favoris.html" aria-label="Favoris">${I.heart}</a>
+    <button class="btn btn-outline btn-sm nav-install hidden" data-install data-install-show type="button">Installer l'app</button>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="Changer de thème">${I.moon}</button>
     <a class="btn btn-primary btn-sm nav-account" id="accountLink" href="profil.html">Mon compte</a>
   </div>
@@ -63,7 +72,7 @@ ${main}
       <p>Découvrez et réservez les concerts, ateliers, expositions et rencontres de Conakry.</p><span class="flag"><i style="background:#E11D33"></i><i style="background:#F7B500"></i><i style="background:#12855B"></i></span></div>
     <div><h4>Découvrir</h4><a href="explorer.html">Explorer</a><a href="carte.html">Carte des événements</a><a href="explorer.html?cat=Concert">Concerts</a><a href="explorer.html?cat=Atelier">Ateliers</a></div>
     <div><h4>Mon espace</h4><a href="billets.html">Mes billets</a><a href="favoris.html">Favoris</a><a href="rappels.html">Rappels</a><a href="profil.html">Mon profil</a></div>
-    <div><h4>Aide</h4><a href="profil.html#parametres">Paramètres</a><a href="profil.html#notifications">Notifications</a><a href="prototype/index.html">Maquette mobile</a></div>
+    <div><h4>Aide</h4><a href="profil.html#parametres">Paramètres</a><a href="profil.html#notifications">Notifications</a><a href="#" class="hidden" data-install data-install-show>Installer l'application</a><a href="prototype/index.html">Maquette mobile</a></div>
   </div>
   <div class="foot-bottom">© 2026 EventGo — Projet de démonstration : les événements, organisateurs et billets présentés sont fictifs, aucun paiement réel n'est effectué. Marques Orange Money et MTN Mobile Money citées à titre d'illustration.</div>
 </div></footer>
@@ -91,7 +100,7 @@ layout({
     <h1 style="margin-top:16px">Vivez les <em>meilleurs événements</em> de Conakry</h1>
     <p class="lead">Concerts, ateliers, expositions, rencontres… Découvrez ce qui se passe autour de vous et réservez votre place en quelques clics.</p>
     <form class="search-box" action="explorer.html" method="get" role="search">
-      <input name="q" type="search" placeholder="Rechercher un événement, un lieu…" aria-label="Rechercher un événement">
+      <input name="q" type="search" placeholder="Rechercher un événement" aria-label="Rechercher un événement">
       <select name="cat" id="heroCat" aria-label="Catégorie"></select>
       <button class="btn btn-primary" type="submit">Rechercher</button>
     </form>
@@ -104,6 +113,12 @@ layout({
     <div class="float-card"><span class="ic">${I.check}</span><div><span id="heroCount">0</span> événements à venir<small>à Conakry</small></div></div>
   </div>
 </div></section>
+
+<div class="container hidden" data-install-show><div class="install-banner">
+  <img src="assets/icons/icon-192.png" alt="" width="56" height="56">
+  <div class="grow"><b>Installez EventGo</b><p class="muted">Accédez à vos billets en un geste, même sans connexion.</p></div>
+  <button class="btn btn-primary" data-install type="button">Installer l'application</button>
+</div></div>
 
 <section class="section"><div class="container">
   <div class="section-head"><h2>Parcourir par catégorie</h2><a href="explorer.html">Tout explorer →</a></div>
@@ -243,8 +258,95 @@ layout({
   <div class="grid-cards" id="favList"></div></div>`
 });
 
+// ------------------------------------------------------------------ Hors ligne
+layout({
+  file: 'offline.html', page: 'offline', nav: 'none',
+  title: 'Hors ligne — EventGo', desc: 'Vous êtes hors ligne.',
+  main: `
+<div class="container"><div class="empty" style="margin:60px auto;max-width:560px">
+  <h3>Vous êtes hors ligne</h3>
+  <p>Cette page n'est pas disponible sans connexion. Vos billets, favoris et rappels restent accessibles.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px">
+    <a class="btn btn-primary" href="billets.html">Mes billets</a>
+    <button class="btn btn-outline" type="button" onclick="location.reload()">Réessayer</button>
+  </div>
+</div></div>`
+});
+
+// ------------------------------------------------------------------ Service worker
+process.on('exit', function buildServiceWorker() { // runs after every page is written, so the cache hash is accurate
+  const crypto = require('crypto');
+  const pages = ['index', 'explorer', 'carte', 'evenement', 'reservation', 'confirmation', 'billets', 'billet', 'rappels', 'favoris', 'profil', 'offline'].map(p => p + '.html');
+  const assets = ['assets/site.css', 'assets/data.js', 'assets/core.js', 'assets/pages.js', 'assets/favicon.svg', 'manifest.webmanifest',
+    'assets/icons/icon-192.png', 'assets/icons/icon-512.png', 'assets/icons/maskable-512.png', 'assets/icons/apple-touch-icon.png',
+    'assets/img/concert.jpg', 'assets/img/atelier.jpg', 'assets/img/rencontre.jpg', 'assets/img/exposition.jpg', 'assets/img/educatif.jpg',
+    'assets/img/culturel.jpg', 'assets/img/institutionnel.jpg', 'assets/img/orange-money-logo.png', 'assets/img/mtn-logo.svg'];
+  const precache = pages.concat(assets);
+  const h = crypto.createHash('md5');
+  precache.forEach(f => { try { h.update(fs.readFileSync(path.join(ROOT, f))); } catch (e) { console.warn('missing for precache:', f); } });
+  const version = h.digest('hex').slice(0, 10);
+  const sw = `// EventGo service worker — generated by _src/build.js (do not edit by hand).
+'use strict';
+var VERSION = '${version}';
+var STATIC = 'eventgo-static-' + VERSION;
+var RUNTIME = 'eventgo-runtime';
+var PRECACHE = ${JSON.stringify(precache)};
+var THIRD_PARTY = /(^|\\.)(fonts\\.googleapis\\.com|fonts\\.gstatic\\.com|unpkg\\.com|cdn\\.jsdelivr\\.net)$/;
+
+self.addEventListener('install', function (e) {
+  e.waitUntil(caches.open(STATIC).then(function (c) { return c.addAll(PRECACHE); }).then(function () { return self.skipWaiting(); }));
+});
+
+self.addEventListener('activate', function (e) {
+  e.waitUntil(caches.keys().then(function (keys) {
+    return Promise.all(keys.filter(function (k) { return k.indexOf('eventgo-static-') === 0 && k !== STATIC; }).map(function (k) { return caches.delete(k); }));
+  }).then(function () { return self.clients.claim(); }));
+});
+
+function pageKey(url) { var p = url.pathname; if (p.charAt(p.length - 1) === '/') p += 'index.html'; return url.origin + p; }
+
+function networkFirst(req) {
+  var url = new URL(req.url), key = pageKey(url);
+  return fetch(req).then(function (res) {
+    if (res && res.ok) { var copy = res.clone(); caches.open(STATIC).then(function (c) { c.put(key, copy); }); }
+    return res;
+  }).catch(function () {
+    return caches.match(key).then(function (hit) { return hit || caches.match(new URL('offline.html', self.registration.scope).href); });
+  });
+}
+
+function staleWhileRevalidate(req, cacheName) {
+  return caches.open(cacheName).then(function (cache) {
+    return cache.match(req).then(function (hit) {
+      var net = fetch(req).then(function (res) { if (res && (res.ok || res.type === 'opaque')) cache.put(req, res.clone()); return res; }).catch(function () { return hit; });
+      return hit || net;
+    });
+  });
+}
+
+self.addEventListener('fetch', function (e) {
+  var req = e.request;
+  if (req.method !== 'GET') return;
+  var url = new URL(req.url);
+  if (/tile\\.openstreetmap\\.org$/.test(url.hostname)) return; // map tiles: network only
+  if (req.mode === 'navigate') { if (url.origin === self.location.origin) e.respondWith(networkFirst(req)); return; }
+  if (url.origin === self.location.origin) {
+    if (/\\/(prototype|wireframe)\\//.test(url.pathname)) return;
+    e.respondWith(caches.match(req).then(function (hit) { return hit || staleWhileRevalidate(req, STATIC); }).then(function (res) {
+      // refresh in background for code files so updates arrive on next visit
+      return res;
+    }));
+    return;
+  }
+  if (THIRD_PARTY.test(url.hostname)) e.respondWith(staleWhileRevalidate(req, RUNTIME));
+});
+`;
+  fs.writeFileSync(path.join(ROOT, 'sw.js'), sw, 'utf8');
+  console.log('wrote sw.js (cache ' + version + ', ' + precache.length + ' files)');
+});
+
 // ------------------------------------------------------------------ Profil
-const row = (title, sub, id) => `<div class="list-row"><span class="grow"><b>${title}</b><small>${sub}</small></span><label class="switch"><input type="checkbox" id="${id}" aria-label="${title}"><span></span></label></div>`;
+const row =(title, sub, id) => `<div class="list-row"><span class="grow"><b>${title}</b><small>${sub}</small></span><label class="switch"><input type="checkbox" id="${id}" aria-label="${title}"><span></span></label></div>`;
 layout({
   file: 'profil.html', page: 'profile', nav: 'profil',
   title: 'Mon compte — EventGo', desc: 'Profil, paramètres et notifications.',
@@ -274,6 +376,7 @@ layout({
       <div class="list-row"><span class="grow"><b>Langue</b><small>Français</small></span></div>
       <div class="list-row"><span class="grow"><b>Devise</b><small>Franc guinéen (GNF)</small></span></div>
       ${row('Mode sombre', "Réduit l'éclat de l'écran", 's-dark')}
+      <div class="list-row hidden" data-install-show><span class="grow"><b>Installer l'application</b><small>Ajouter EventGo à votre écran d'accueil ou à votre bureau</small></span><button class="btn btn-outline btn-sm" data-install type="button">Installer</button></div>
       <div class="list-row"><span class="grow"><b>Mes données</b><small>Effacer profil, billets, favoris et rappels de cet appareil</small></span><button class="btn btn-outline btn-sm" id="wipe" type="button">Effacer</button></div>
     </div></section>
     <section class="pane hidden" id="pane-notifications"><div class="card"><h2>Notifications</h2>

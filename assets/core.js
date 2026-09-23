@@ -155,7 +155,52 @@
   }
   function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
 
+  // ---- PWA: install prompt, standalone mode, offline notices, service worker
+  var deferredPrompt = window.__egPrompt || null;
+  function isStandalone() {
+    return (window.matchMedia && (matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: window-controls-overlay)').matches)) || navigator.standalone === true;
+  }
+  function isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+  function canInstall() { return !isStandalone() && (!!deferredPrompt || isIOS()); }
+  function refreshInstall() {
+    document.querySelectorAll('[data-install-show]').forEach(function (el) { el.classList.toggle('hidden', !canInstall()); });
+  }
+  function iosHelp() {
+    var dlg = document.getElementById('iosDlg');
+    if (!dlg) { dlg = document.createElement('dialog'); dlg.id = 'iosDlg'; document.body.appendChild(dlg); }
+    dlg.innerHTML = '<div class="dlg"><h3>Installer EventGo</h3><ol style="padding-left:20px;line-height:1.7;margin:0 0 18px"><li>Touchez le bouton <b>Partager</b> de votre navigateur.</li><li>Choisissez <b>« Sur l\'écran d\'accueil »</b>.</li><li>Validez avec <b>Ajouter</b>.</li></ol><button class="btn btn-primary btn-block" type="button" id="iosOk">Compris</button></div>';
+    dlg.showModal(); dlg.querySelector('#iosOk').onclick = function () { dlg.close(); };
+    dlg.onclick = function (e) { if (e.target === dlg) dlg.close(); };
+  }
+  function install() {
+    if (deferredPrompt) {
+      var p = deferredPrompt; deferredPrompt = null; window.__egPrompt = null;
+      p.prompt();
+      p.userChoice.then(function (r) { if (r.outcome === 'accepted') toast('Installation en cours…'); refreshInstall(); });
+    } else if (isIOS()) { iosHelp(); }
+  }
+  function initPWA() {
+    if (isStandalone()) document.documentElement.classList.add('standalone');
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; window.__egPrompt = e; refreshInstall(); });
+    window.addEventListener('appinstalled', function () { deferredPrompt = null; toast('EventGo est installé'); refreshInstall(); });
+    document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-install]'); if (b) { e.preventDefault(); install(); } });
+    window.addEventListener('offline', function () { toast('Vous êtes hors ligne — vos billets restent disponibles', 4000); });
+    window.addEventListener('online', function () { toast('Connexion rétablie'); });
+    refreshInstall();
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').then(function (reg) {
+          reg.addEventListener('updatefound', function () {
+            var w = reg.installing; if (!w) return;
+            w.addEventListener('statechange', function () { if (w.state === 'installed' && navigator.serviceWorker.controller) toast('Nouvelle version disponible — actualisez la page.', 8000); });
+          });
+        }).catch(function () {});
+      });
+    }
+  }
+
   function initChrome() {
+    initPWA();
     var page = document.body.getAttribute('data-nav');
     document.querySelectorAll('[data-nav-link]').forEach(function (a) { if (a.getAttribute('data-nav-link') === page) { a.classList.add('active'); a.setAttribute('aria-current', 'page'); } });
     var acc = document.getElementById('accountLink'), p = profile();

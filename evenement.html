@@ -7,6 +7,14 @@
 <meta name="description" content="Détails de l'événement : date, lieu, prix et réservation.">
 <meta name="theme-color" content="#E11D33">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="application-name" content="EventGo">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="EventGo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__egPrompt=e});</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
@@ -21,6 +29,7 @@
   <div class="nav-actions">
     <a class="icon-btn" href="rappels.html" aria-label="Rappels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M6 17h12M8 17v-6a4 4 0 0 1 8 0v6"/><path d="M10.4 20a1.7 1.7 0 0 0 3.2 0"/></svg><span class="dot hidden" id="remDot"></span></a>
     <a class="icon-btn" href="favoris.html" aria-label="Favoris"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 20s-7-4.4-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 5c-2.3 4.6-9.3 9-9.3 9Z"/></svg></a>
+    <button class="btn btn-outline btn-sm nav-install hidden" data-install data-install-show type="button">Installer l'app</button>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="Changer de thème"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button>
     <a class="btn btn-primary btn-sm nav-account" id="accountLink" href="profil.html">Mon compte</a>
   </div>
@@ -34,7 +43,7 @@
       <p>Découvrez et réservez les concerts, ateliers, expositions et rencontres de Conakry.</p><span class="flag"><i style="background:#E11D33"></i><i style="background:#F7B500"></i><i style="background:#12855B"></i></span></div>
     <div><h4>Découvrir</h4><a href="explorer.html">Explorer</a><a href="carte.html">Carte des événements</a><a href="explorer.html?cat=Concert">Concerts</a><a href="explorer.html?cat=Atelier">Ateliers</a></div>
     <div><h4>Mon espace</h4><a href="billets.html">Mes billets</a><a href="favoris.html">Favoris</a><a href="rappels.html">Rappels</a><a href="profil.html">Mon profil</a></div>
-    <div><h4>Aide</h4><a href="profil.html#parametres">Paramètres</a><a href="profil.html#notifications">Notifications</a><a href="prototype/index.html">Maquette mobile</a></div>
+    <div><h4>Aide</h4><a href="profil.html#parametres">Paramètres</a><a href="profil.html#notifications">Notifications</a><a href="#" class="hidden" data-install data-install-show>Installer l'application</a><a href="prototype/index.html">Maquette mobile</a></div>
   </div>
   <div class="foot-bottom">© 2026 EventGo — Projet de démonstration : les événements, organisateurs et billets présentés sont fictifs, aucun paiement réel n'est effectué. Marques Orange Money et MTN Mobile Money citées à titre d'illustration.</div>
 </div></footer>
