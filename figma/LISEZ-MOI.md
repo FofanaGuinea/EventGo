@@ -21,12 +21,27 @@ Les fichiers sont numérotés (`01-accueil`, `02-explorer`, `03-carte`, `04-even
 3. Glissez un fichier `.svg` sur le canvas. Pour importer tout un dossier d'un coup, sélectionnez tous les
    fichiers du dossier et glissez-les ensemble : Figma les place côte à côte.
 4. Si un import arrive sous forme de groupe et non de cadre : sélectionnez-le, puis **Ctrl+Alt+G**
-   (Cadre de la sélection). Renommez ensuite le cadre (par exemple « Accueil — Ordinateur »).
+   (Cadre de la sélection). Si vous renommez un cadre, gardez le numéro au début (par exemple « 01 Accueil ») : le plugin de prototype s'en sert.
 5. Rangez-les par pages Figma : `01 Site — Ordinateur`, `02 Site — Mobile`, `03 iPhone — Maquette`,
    `04 iPhone — Wireframe`.
 
 Les calques portent le nom de leur classe CSS (`site-header`, `ev-card`, `badge-cat`, `btn`…), ce qui aide à
 se repérer dans le panneau des calques.
+
+## Prototype automatique (plugin Figma)
+
+Le dossier `plugin-prototype/` contient un plugin qui trace tous les liens du prototype d'un coup
+(environ 70 liens par série d'écrans iPhone, environ 190 pour le site).
+
+1. Utilisez l'application **Figma pour ordinateur** (figma.com/downloads). Les plugins locaux ne marchent pas dans le navigateur.
+2. Gardez les noms des cadres tels qu'importés (`01-accueil`, `02-explorer`…) : le plugin retrouve les écrans par leur numéro.
+3. Menu Figma, **Plugins**, **Development**, **Import plugin from manifest…**, puis choisissez `plugin-prototype/manifest.json`.
+4. Ouvrez la page à relier (par exemple « Maquette iPhone »), puis **Plugins**, **Development**, **EventGo — liens du prototype**.
+5. Une fenêtre affiche le rapport : nombre de liens créés et éléments introuvables.
+6. Répétez pour chaque page. Le plugin détecte tout seul s'il s'agit des écrans iPhone (13 écrans) ou du site (14 pages).
+7. Contrôle : sélectionnez un écran, onglet **Prototype** à droite, puis lecture (bouton triangle en haut à droite).
+
+Le point de départ du parcours est placé sur l'écran 01. Sur l'écran iPhone Accueil, le bouton « Voir la carte » est sous la zone visible : utilisez l'onglet Carte.
 
 ## À savoir
 
