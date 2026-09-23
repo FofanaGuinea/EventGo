@@ -2,55 +2,55 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EventGo — Maquette UI — Carte</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/ui-theme.css">
-<style>
-  .map{position:absolute;inset:0;background:linear-gradient(#F3F1EA,#EDEAE0) padding-box,repeating-linear-gradient(0deg,rgba(180,175,160,0.35) 0 1px,transparent 1px 50px),repeating-linear-gradient(90deg,rgba(180,175,160,0.35) 0 1px,transparent 1px 50px);}
-  .coast{position:absolute;right:-70px;top:0;bottom:0;width:220px;background:linear-gradient(160deg,#8FC7D6,#5FA9BC);border-radius:55% 0 0 45% / 65% 0 0 35%;}
-  .marker{position:absolute;width:36px;height:36px;border-radius:50% 50% 50% 0;transform:translate(-50%,-100%) rotate(-45deg);display:flex;align-items:center;justify-content:center;border:2.5px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.25);cursor:pointer;}
-  .marker svg{transform:rotate(45deg);width:15px;height:15px;color:#fff;}
-  .marker.selected{width:44px;height:44px;box-shadow:0 6px 16px rgba(0,0,0,0.32);}
-  .fab{position:absolute;width:48px;height:48px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(21,23,27,0.18);}
-  .preview{position:absolute;left:16px;right:16px;bottom:110px;background:#fff;border-radius:18px;padding:12px;display:flex;gap:12px;box-shadow:0 14px 32px rgba(21,23,27,0.22);text-decoration:none;color:inherit;}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carte des événements — EventGo</title>
+<meta name="description" content="Tous les événements de Conakry sur une carte interactive.">
+<meta name="theme-color" content="#E11D33">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script>try{var s=JSON.parse(localStorage.getItem('eg_settings')||'{}');var d=s.dark!=null?s.dark:matchMedia('(prefers-color-scheme:dark)').matches;if(d)document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 </head>
-<body>
-<div class="screen">
-  <div class="map">
-    <div class="coast"></div>
-    <div class="marker" id="marker-0" style="left:32%;top:30%;background:#E11D33;" onclick="selectMarker(0, MAP_DATA)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg></div>
-    <div class="marker selected" id="marker-1" style="left:52%;top:22%;background:#F7B500;" onclick="selectMarker(1, MAP_DATA)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg></div>
-    <div class="marker" id="marker-2" style="left:66%;top:44%;background:#6C5CE7;" onclick="selectMarker(2, MAP_DATA)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg></div>
-    <div class="marker" id="marker-3" style="left:40%;top:58%;background:#F7B500;" onclick="selectMarker(3, MAP_DATA)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg></div>
-    <div class="marker" id="marker-4" style="left:24%;top:70%;background:#FF6F59;" onclick="selectMarker(4, MAP_DATA)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg></div>
+<body data-page="carte" data-nav="carte">
+<a class="sr-only" href="#main">Aller au contenu</a>
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html" aria-label="EventGo — accueil"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></span>EventGo</a>
+  <nav class="nav-links" aria-label="Navigation principale"><a data-nav-link="home" href="index.html">Accueil</a><a data-nav-link="explorer" href="explorer.html">Explorer</a><a data-nav-link="carte" href="carte.html">Carte</a><a data-nav-link="billets" href="billets.html">Mes billets</a></nav>
+  <div class="nav-actions">
+    <a class="icon-btn" href="rappels.html" aria-label="Rappels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M6 17h12M8 17v-6a4 4 0 0 1 8 0v6"/><path d="M10.4 20a1.7 1.7 0 0 0 3.2 0"/></svg><span class="dot hidden" id="remDot"></span></a>
+    <a class="icon-btn" href="favoris.html" aria-label="Favoris"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 20s-7-4.4-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 5c-2.3 4.6-9.3 9-9.3 9Z"/></svg></a>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Changer de thème"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button>
+    <a class="btn btn-primary btn-sm nav-account" id="accountLink" href="profil.html">Mon compte</a>
   </div>
-  <div class="safe-top" style="position:relative;z-index:2;"></div>
-  <div class="header" style="position:relative;z-index:2;">
-    <a class="icon-btn" href="accueil.html" style="background:#fff;box-shadow:0 4px 10px rgba(0,0,0,0.1);" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
-    <div class="search-bar grow" style="background:#fff;box-shadow:0 4px 10px rgba(0,0,0,0.08);border:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Carte — Conakry</span></div>
-  </div>
-  <button class="fab" style="right:16px;top:120px;" aria-label="Filtrer"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-900)" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M8 17h12"/><circle cx="16" cy="7" r="2.2"/><circle cx="6" cy="17" r="2.2"/></svg></button>
-  <button class="fab" style="right:16px;bottom:118px;" aria-label="Ma position"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></button>
-  <a class="preview" href="detail.html" id="markerPreview">
-    <div class="card-media" style="width:64px;height:64px;border-radius:12px;flex:0 0 auto;background:linear-gradient(135deg,#F7B500,#333);" id="prevMedia"><img src="assets/img/atelier.jpg" alt="Atelier" style="width:100%;height:100%;object-fit:cover;"></div>
-    <div style="flex:1;">
-      <span class="badge" id="prevCat" style="background:#FEF3D6;color:#F7B500;">Atelier</span>
-      <div class="card-title" style="font-size:14px;margin-top:3px;" id="prevTitle">Marché des Créateurs</div>
-      <div class="card-meta" id="prevMeta">13 oct. · 9h · Place du 8 Novembre</div>
-    </div>
-    <span class="btn btn-primary btn-sm" style="align-self:center;">Détails</span>
-  </a>
-  <nav class="tabbar">
-    <a class="tab-item" href="accueil.html" aria-label="Accueil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg><span>Accueil</span></a>
-    <a class="tab-item" href="explorer.html" aria-label="Explorer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Explorer</span></a>
-    <a class="tab-item active" href="carte.html" aria-label="Carte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><span>Carte</span></a>
-    <a class="tab-item" href="billets.html" aria-label="Billets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a1.6 1.6 0 0 0 0 3.1V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.7a1.6 1.6 0 0 0 0-3.1V9Z"/><path d="M14 7v10" stroke-dasharray="2.2 2.2"/></svg><span>Billets</span></a>
-    <a class="tab-item" href="profil.html" aria-label="Profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg><span>Profil</span></a>
-  </nav>
+</div></header>
+<main id="main">
+
+<div class="map-layout">
+  <aside class="map-list" aria-label="Liste des événements">
+    <div><h1 style="font-size:1.5rem">Carte des événements</h1><p class="muted" style="margin-top:6px">Touchez un repère ou un événement pour le localiser.</p></div>
+    <div class="chip-row" id="mapChips"></div>
+    <button class="btn btn-outline btn-block" id="locate" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg> Ma position</button>
+    <div id="mapList" style="display:flex;flex-direction:column;gap:12px"></div>
+  </aside>
+  <div id="map" role="region" aria-label="Carte de Conakry"></div>
 </div>
-<script>var MAP_DATA = [{"title":"Nuit Acoustique — Kaloum","date":"12 oct. · 20h","loc":"Institut Franco-Guinéen","cat":"Concert","color":"#E11D33","bg":"#FCE7E9","img":"assets/img/concert.jpg"},{"title":"Marché des Créateurs","date":"13 oct. · 9h","loc":"Place du 8 Novembre","cat":"Atelier","color":"#F7B500","bg":"#FEF3D6","img":"assets/img/atelier.jpg"},{"title":"Expo Photo — Regards de Guinée","date":"18 oct. · 9h","loc":"Palais du Peuple","cat":"Exposition","color":"#6C5CE7","bg":"#EAE7FC","img":"assets/img/exposition.jpg"},{"title":"Atelier Poterie & Céramique","date":"19 oct. · 14h","loc":"Ratoma, Conakry","cat":"Atelier","color":"#F7B500","bg":"#FEF3D6","img":"assets/img/atelier.jpg"},{"title":"Rencontre Jeunes Entrepreneurs","date":"24 oct. · 18h","loc":"Novotel Conakry","cat":"Rencontre","color":"#FF6F59","bg":"#FFE7E2","img":"assets/img/rencontre.jpg"}];</script>
-<script src="assets/app.js"></script>
+</main>
+<footer class="site-footer"><div class="container">
+  <div class="foot-grid">
+    <div><a class="brand" href="index.html"><span class="brand-mark" style="background:#2a2d35"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></span>EventGo</a>
+      <p>Découvrez et réservez les concerts, ateliers, expositions et rencontres de Conakry.</p><span class="flag"><i style="background:#E11D33"></i><i style="background:#F7B500"></i><i style="background:#12855B"></i></span></div>
+    <div><h4>Découvrir</h4><a href="explorer.html">Explorer</a><a href="carte.html">Carte des événements</a><a href="explorer.html?cat=Concert">Concerts</a><a href="explorer.html?cat=Atelier">Ateliers</a></div>
+    <div><h4>Mon espace</h4><a href="billets.html">Mes billets</a><a href="favoris.html">Favoris</a><a href="rappels.html">Rappels</a><a href="profil.html">Mon profil</a></div>
+    <div><h4>Aide</h4><a href="profil.html#parametres">Paramètres</a><a href="profil.html#notifications">Notifications</a><a href="prototype/index.html">Maquette mobile</a></div>
+  </div>
+  <div class="foot-bottom">© 2026 EventGo — Projet de démonstration : les événements, organisateurs et billets présentés sont fictifs, aucun paiement réel n'est effectué. Marques Orange Money et MTN Mobile Money citées à titre d'illustration.</div>
+</div></footer>
+<nav class="bottom-nav" aria-label="Navigation mobile"><a data-nav-link="home" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg><span>Accueil</span></a><a data-nav-link="explorer" href="explorer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Explorer</span></a><a data-nav-link="carte" href="carte.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><span>Carte</span></a><a data-nav-link="billets" href="billets.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a1.6 1.6 0 0 0 0 3.1V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.7a1.6 1.6 0 0 0 0-3.1V9Z"/><path d="M14 7v10" stroke-dasharray="2.2 2.2"/></svg><span>Billets</span></a><a data-nav-link="profil" href="profil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg><span>Profil</span></a></nav>
+<script src="assets/data.js"></script>
+<script src="assets/core.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="assets/pages.js"></script>
 </body>
 </html>

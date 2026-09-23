@@ -2,57 +2,49 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EventGo — Maquette UI — Mes billets</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/ui-theme.css">
-<style>
-  .seg{display:flex;background:var(--surface-alt);border-radius:14px;padding:4px;gap:4px;}
-  .seg-btn{flex:1;text-align:center;padding:10px 0;border-radius:11px;font-family:'Manrope',sans-serif;font-weight:700;font-size:13.5px;color:var(--ink-500);cursor:pointer;}
-  .seg-btn.on{background:var(--surface);color:var(--ink-900);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
-  .ticket{display:flex;background:var(--surface);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-card);text-decoration:none;color:inherit;}
-  .ticket .qr-mini{width:84px;flex:0 0 auto;background:linear-gradient(135deg,#E11D33,#8E1727);display:flex;align-items:center;justify-content:center;position:relative;}
-  .ticket .qr-mini::after{content:"";position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:var(--bg);}
-  .ticket .qr-mini svg{width:34px;height:34px;color:#fff;}
-  .ticket .info{padding:14px 16px;flex:1;}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mes billets — EventGo</title>
+<meta name="description" content="Retrouvez vos billets à venir et passés.">
+<meta name="theme-color" content="#E11D33">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+
+<script>try{var s=JSON.parse(localStorage.getItem('eg_settings')||'{}');var d=s.dark!=null?s.dark:matchMedia('(prefers-color-scheme:dark)').matches;if(d)document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 </head>
-<body>
-<div class="screen">
-  <div class="safe-top"></div>
-  <div class="header"><span class="header-title">Mes billets</span></div>
-  <div class="pad-x" style="flex:0 0 auto;"><div class="seg">
-    <div class="seg-btn on" data-tabgroup="billets" data-tabvalue="up" onclick="setTab('billets','up')">À venir</div>
-    <div class="seg-btn" data-tabgroup="billets" data-tabvalue="past" onclick="setTab('billets','past')">Passés</div>
-  </div></div>
-  <div class="scroll">
-    <div class="vcards" style="margin-top:16px;padding-bottom:110px;">
-      <div data-tabpanel="billets" data-panelvalue="up" data-panel-display="flex" style="display:flex;flex-direction:column;gap:14px;">
-        <a class="ticket" href="billet-detail.html">
-          <div class="qr-mini" style="background:linear-gradient(135deg,#E11D33,#8E1727);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg></div>
-          <div class="info"><span class="badge" style="background:#E2F3EC;color:#12855B;">À venir</span><div class="card-title" style="margin-top:7px;">Nuit Acoustique — Kaloum</div><div class="card-meta">12 oct. 2026 · 20h00</div><div class="card-meta">Institut Franco-Guinéen</div></div>
-        </a>
-        <a class="ticket" href="billet-detail.html">
-          <div class="qr-mini" style="background:linear-gradient(135deg,#2E6BE6,#1E4DB5);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg></div>
-          <div class="info"><span class="badge" style="background:#E2F3EC;color:#12855B;">À venir</span><div class="card-title" style="margin-top:7px;">Forum Jeunesse &amp; Numérique</div><div class="card-meta">21 oct. 2026 · 9h00</div><div class="card-meta">Université G. A. Nasser</div></div>
-        </a>
-      </div>
-      <div data-tabpanel="billets" data-panelvalue="past" data-panel-display="flex" style="display:none;flex-direction:column;gap:14px;">
-        <a class="ticket" href="billet-detail.html" style="opacity:0.55;">
-          <div class="qr-mini" style="background:linear-gradient(135deg,#12855B,#0B5E40);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg></div>
-          <div class="info"><span class="badge" style="background:var(--surface-alt);color:var(--ink-500);">Terminé</span><div class="card-title" style="margin-top:7px;">Festival Culturel de Guinée 2025</div><div class="card-meta">2 nov. 2025 · 15h00</div><div class="card-meta">Stade du 28 Septembre</div></div>
-        </a>
-      </div>
-    </div>
+<body data-page="tickets" data-nav="billets">
+<a class="sr-only" href="#main">Aller au contenu</a>
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html" aria-label="EventGo — accueil"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></span>EventGo</a>
+  <nav class="nav-links" aria-label="Navigation principale"><a data-nav-link="home" href="index.html">Accueil</a><a data-nav-link="explorer" href="explorer.html">Explorer</a><a data-nav-link="carte" href="carte.html">Carte</a><a data-nav-link="billets" href="billets.html">Mes billets</a></nav>
+  <div class="nav-actions">
+    <a class="icon-btn" href="rappels.html" aria-label="Rappels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M6 17h12M8 17v-6a4 4 0 0 1 8 0v6"/><path d="M10.4 20a1.7 1.7 0 0 0 3.2 0"/></svg><span class="dot hidden" id="remDot"></span></a>
+    <a class="icon-btn" href="favoris.html" aria-label="Favoris"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 20s-7-4.4-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 5c-2.3 4.6-9.3 9-9.3 9Z"/></svg></a>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Changer de thème"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button>
+    <a class="btn btn-primary btn-sm nav-account" id="accountLink" href="profil.html">Mon compte</a>
   </div>
-  <nav class="tabbar">
-    <a class="tab-item" href="accueil.html" aria-label="Accueil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg><span>Accueil</span></a>
-    <a class="tab-item" href="explorer.html" aria-label="Explorer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Explorer</span></a>
-    <a class="tab-item" href="carte.html" aria-label="Carte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><span>Carte</span></a>
-    <a class="tab-item active" href="billets.html" aria-label="Billets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a1.6 1.6 0 0 0 0 3.1V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.7a1.6 1.6 0 0 0 0-3.1V9Z"/><path d="M14 7v10" stroke-dasharray="2.2 2.2"/></svg><span>Billets</span></a>
-    <a class="tab-item" href="profil.html" aria-label="Profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg><span>Profil</span></a>
-  </nav>
-</div>
-<script src="assets/app.js"></script>
+</div></header>
+<main id="main">
+
+<div class="container" style="padding-bottom:64px"><div class="page-head"><h1>Mes billets</h1><p>Vos réservations sont enregistrées sur cet appareil.</p></div>
+  <div class="tabs" role="tablist"><button class="tab on" data-tab="up" role="tab" aria-selected="true">À venir</button><button class="tab" data-tab="past" role="tab" aria-selected="false">Passés</button></div>
+  <div class="ticket-list" id="ticketList"></div></div>
+</main>
+<footer class="site-footer"><div class="container">
+  <div class="foot-grid">
+    <div><a class="brand" href="index.html"><span class="brand-mark" style="background:#2a2d35"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></span>EventGo</a>
+      <p>Découvrez et réservez les concerts, ateliers, expositions et rencontres de Conakry.</p><span class="flag"><i style="background:#E11D33"></i><i style="background:#F7B500"></i><i style="background:#12855B"></i></span></div>
+    <div><h4>Découvrir</h4><a href="explorer.html">Explorer</a><a href="carte.html">Carte des événements</a><a href="explorer.html?cat=Concert">Concerts</a><a href="explorer.html?cat=Atelier">Ateliers</a></div>
+    <div><h4>Mon espace</h4><a href="billets.html">Mes billets</a><a href="favoris.html">Favoris</a><a href="rappels.html">Rappels</a><a href="profil.html">Mon profil</a></div>
+    <div><h4>Aide</h4><a href="profil.html#parametres">Paramètres</a><a href="profil.html#notifications">Notifications</a><a href="prototype/index.html">Maquette mobile</a></div>
+  </div>
+  <div class="foot-bottom">© 2026 EventGo — Projet de démonstration : les événements, organisateurs et billets présentés sont fictifs, aucun paiement réel n'est effectué. Marques Orange Money et MTN Mobile Money citées à titre d'illustration.</div>
+</div></footer>
+<nav class="bottom-nav" aria-label="Navigation mobile"><a data-nav-link="home" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg><span>Accueil</span></a><a data-nav-link="explorer" href="explorer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Explorer</span></a><a data-nav-link="carte" href="carte.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><span>Carte</span></a><a data-nav-link="billets" href="billets.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a1.6 1.6 0 0 0 0 3.1V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.7a1.6 1.6 0 0 0 0-3.1V9Z"/><path d="M14 7v10" stroke-dasharray="2.2 2.2"/></svg><span>Billets</span></a><a data-nav-link="profil" href="profil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg><span>Profil</span></a></nav>
+<script src="assets/data.js"></script>
+<script src="assets/core.js"></script>
+
+<script src="assets/pages.js"></script>
 </body>
 </html>

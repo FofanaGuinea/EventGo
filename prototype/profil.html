@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventGo — Maquette UI — Profil</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../assets/ui-theme.css">
+<style>
+  .avatar{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#E11D33,#F7B500);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-family:'Sora',sans-serif;font-weight:800;font-size:26px;box-shadow:0 10px 22px rgba(225,29,51,0.25);}
+  .menu-item{display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--border);text-decoration:none;color:inherit;}
+  .menu-item .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .menu-item .ic svg{width:19px;height:19px;}</style>
+</head>
+<body>
+<div class="screen">
+  <div class="safe-top"></div>
+  <div class="header"><span class="header-title">Profil</span></div>
+  <div class="scroll">
+    <div class="pad-x" style="text-align:center;padding-top:6px;">
+      <div class="avatar">MD</div>
+      <div style="font-family:'Sora',sans-serif;font-weight:800;font-size:18px;">Mamadou Diallo</div>
+      <div style="font-size:13px;color:var(--ink-500);">mamadou.diallo@mail.com</div>
+    </div>
+    <div class="pad-x" style="margin-top:26px;">
+      <a class="menu-item" href="favoris.html"><div class="ic" style="background:#FCE7E9;"><svg viewBox="0 0 24 24" fill="none" stroke="#E11D33" stroke-width="1.8"><path d="M12 20s-7-4.4-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 5c-2.3 4.6-9.3 9-9.3 9Z"/></svg></div><span class="grow" style="font-weight:700;">Mes favoris</span><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.8" style="width:16px;height:16px;"><path d="m9 6 6 6-6 6"/></svg></a>
+      <a class="menu-item" href="billets.html"><div class="ic" style="background:#FEF3D6;"><svg viewBox="0 0 24 24" fill="none" stroke="#8A6400" stroke-width="1.8"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a1.6 1.6 0 0 0 0 3.1V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.7a1.6 1.6 0 0 0 0-3.1V9Z"/></svg></div><span class="grow" style="font-weight:700;">Mes billets</span><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.8" style="width:16px;height:16px;"><path d="m9 6 6 6-6 6"/></svg></a>
+      <a class="menu-item" href="rappels.html"><div class="ic" style="background:#E2F3EC;"><svg viewBox="0 0 24 24" fill="none" stroke="#12855B" stroke-width="1.8"><path d="M6 17h12M8 17v-6a4 4 0 0 1 8 0v6"/><path d="M10.4 20a1.7 1.7 0 0 0 3.2 0"/></svg></div><span class="grow" style="font-weight:700;">Mes rappels</span><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.8" style="width:16px;height:16px;"><path d="m9 6 6 6-6 6"/></svg></a>
+      <a class="menu-item" href="parametres.html"><div class="ic" style="background:#EAE7FC;"><svg viewBox="0 0 24 24" fill="none" stroke="#6C5CE7" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.4M12 18.6V21M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M3 12h2.4M18.6 12H21M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"/></svg></div><span class="grow" style="font-weight:700;">Paramètres</span><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.8" style="width:16px;height:16px;"><path d="m9 6 6 6-6 6"/></svg></a>
+      <a class="menu-item" href="notifications.html"><div class="ic" style="background:#E4ECFD;"><svg viewBox="0 0 24 24" fill="none" stroke="#2E6BE6" stroke-width="1.8"><path d="M6 17h12M8 17v-6a4 4 0 0 1 8 0v6"/></svg></div><span class="grow" style="font-weight:700;">Notifications</span><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.8" style="width:16px;height:16px;"><path d="m9 6 6 6-6 6"/></svg></a>
+      <a class="menu-item" href="#" style="border-bottom:none;"><div class="ic" style="background:var(--surface-alt);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-700)" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></div><span class="grow" style="font-weight:700;">Déconnexion</span></a>
+    </div>
+    <div style="height:100px;"></div>
+  </div>
+  <nav class="tabbar">
+    <a class="tab-item" href="accueil.html" aria-label="Accueil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg><span>Accueil</span></a>
+    <a class="tab-item" href="explorer.html" aria-label="Explorer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Explorer</span></a>
+    <a class="tab-item" href="carte.html" aria-label="Carte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><span>Carte</span></a>
+    <a class="tab-item" href="billets.html" aria-label="Billets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a1.6 1.6 0 0 0 0 3.1V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.7a1.6 1.6 0 0 0 0-3.1V9Z"/><path d="M14 7v10" stroke-dasharray="2.2 2.2"/></svg><span>Billets</span></a>
+    <a class="tab-item active" href="profil.html" aria-label="Profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg><span>Profil</span></a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body>
+</html>

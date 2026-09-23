@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventGo — Maquette UI — Détail du billet</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../assets/ui-theme.css">
+<style>
+  .check-circle{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#12855B,#0B5E40);display:flex;align-items:center;justify-content:center;margin:0 auto;box-shadow:0 10px 24px rgba(18,133,91,0.35);}
+  .ticket-box{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:22px;text-align:center;box-shadow:var(--shadow-card);position:relative;margin:0 20px;}
+  .qr{width:160px;height:160px;margin:16px auto;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:3px;padding:12px;background:#fff;border:1px solid var(--border);border-radius:14px;}
+  .qr i{background:var(--ink-900);border-radius:1px;}
+  .qr i.off{background:transparent;}
+  .dashed{border-top:1.5px dashed var(--border);margin:18px 0;}
+  .organizer{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface-alt);border-radius:var(--radius-md);margin:0 20px;}
+  .organizer .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#E11D33,#F7B500);display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:#fff;font-family:'Sora',sans-serif;font-weight:700;}
+  .verified{display:inline-flex;align-items:center;gap:4px;color:var(--accent-green);font-size:11.5px;font-weight:700;}
+  .sw{width:46px;height:27px;border-radius:14px;background:var(--accent-green);position:relative;flex:0 0 auto;}
+  .sw .knob{position:absolute;top:2px;left:21px;width:23px;height:23px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.25);}</style>
+</head>
+<body>
+<div class="screen">
+  <div class="safe-top"></div>
+  <div class="header">
+    <a class="icon-btn" href="billets.html" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span class="header-title">Mon billet</span>
+  </div>
+  <div class="scroll">
+    <div class="pad-x" style="text-align:center;padding-top:2px;"><span class="badge" style="background:#E2F3EC;color:#12855B;">À venir</span></div>
+    <div class="pad-x" style="margin-top:14px;">
+      <div class="row" style="gap:12px;background:var(--surface-alt);border-radius:var(--radius-md);padding:10px;">
+        <div style="width:64px;height:64px;border-radius:12px;flex:0 0 auto;overflow:hidden;"><img src="../assets/img/concert.jpg" alt="Nuit Acoustique — Kaloum" style="width:100%;height:100%;object-fit:cover;"></div>
+        <div><div class="card-title" style="font-size:14.5px;">Nuit Acoustique — Kaloum</div><div class="card-meta">Concert</div></div>
+      </div>
+    </div>
+    <div class="ticket-box" style="margin-top:20px;">
+      <div style="font-size:12px;color:var(--ink-500);font-weight:600;">Référence du billet</div>
+      <div style="font-family:'Sora',sans-serif;font-weight:800;font-size:19px;letter-spacing:1.5px;margin-top:3px;color:var(--accent-red);">EVG-2610-7743</div>
+      <div class="qr"><i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i>
+        <i class="off"></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i>
+        <i></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i>
+        <i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i>
+        <i class="off"></i><i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i>
+        <i></i><i class="off"></i><i></i><i></i><i class="off"></i><i class="off"></i><i></i>
+        <i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i></div>
+      <div class="dashed"></div>
+      <div style="text-align:left;">
+        <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Samedi 12 octobre 2026 · 20h00</div>
+        <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Institut Franco-Guinéen, Kaloum</div>
+      </div>
+    </div>
+    <div class="section-title" style="margin:22px 20px 8px;padding:0;">Organisateur</div>
+    <div class="organizer"><div class="av">CS</div><div><div style="font-weight:700;font-size:14.5px;">Collectif Sons de Kaloum</div><div class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" width="12" height="12"><path d="m5 13 4 4 10-10"/></svg>Organisateur vérifié</div></div></div>
+    <div class="pad-x" style="margin-top:18px;">
+      <div class="row" style="justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card);padding:14px;">
+        <span style="font-weight:700;font-size:13.5px;">Rappel avant l'événement</span>
+        <div class="sw on" onclick="toggleSwitch(this)"><div class="knob"></div></div>
+      </div>
+    </div>
+    <div style="height:110px;"></div>
+  </div>
+  <div class="bottom-bar" style="position:relative;border-top:none;padding-top:0;">
+    <div class="btn btn-secondary" style="display:flex;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;margin-right:8px;" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="M8 10.8 16 6.2M8 13.2l8 4.6"/></svg>Partager le billet</div>
+  </div>
+</div>
+<script src="../assets/app.js"></script>
+</body>
+</html>

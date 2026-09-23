@@ -2,130 +2,70 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EventGo — Maquette UI — Explorer</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/ui-theme.css">
-<style>
-  .sheet-backdrop{position:absolute;inset:0;background:rgba(15,16,20,0.45);z-index:5;}
-  .sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:10px 20px 30px;z-index:6;box-shadow:0 -12px 30px rgba(0,0,0,0.15);display:none;}
-  .sheet-handle{width:36px;height:4px;border-radius:2px;background:var(--ink-300);margin:6px auto 16px;}
-  .filter-row{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--border);font-family:'Manrope',sans-serif;font-weight:600;font-size:14px;}
-  .filter-val{color:var(--ink-500);font-weight:500;display:flex;align-items:center;gap:4px;}
-  .chip.on{background:var(--accent-red);border-color:var(--accent-red);color:#fff;}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Explorer les événements — EventGo</title>
+<meta name="description" content="Filtrez les événements de Conakry par catégorie, date, quartier et prix.">
+<meta name="theme-color" content="#E11D33">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+
+<script>try{var s=JSON.parse(localStorage.getItem('eg_settings')||'{}');var d=s.dark!=null?s.dark:matchMedia('(prefers-color-scheme:dark)').matches;if(d)document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 </head>
-<body>
-<div class="screen">
-  <div class="safe-top"></div>
-  <div class="header">
-    <a class="icon-btn" href="accueil.html" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
-    <span class="header-title">Explorer</span>
+<body data-page="explorer" data-nav="explorer">
+<a class="sr-only" href="#main">Aller au contenu</a>
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html" aria-label="EventGo — accueil"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></span>EventGo</a>
+  <nav class="nav-links" aria-label="Navigation principale"><a data-nav-link="home" href="index.html">Accueil</a><a data-nav-link="explorer" href="explorer.html">Explorer</a><a data-nav-link="carte" href="carte.html">Carte</a><a data-nav-link="billets" href="billets.html">Mes billets</a></nav>
+  <div class="nav-actions">
+    <a class="icon-btn" href="rappels.html" aria-label="Rappels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M6 17h12M8 17v-6a4 4 0 0 1 8 0v6"/><path d="M10.4 20a1.7 1.7 0 0 0 3.2 0"/></svg><span class="dot hidden" id="remDot"></span></a>
+    <a class="icon-btn" href="favoris.html" aria-label="Favoris"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 20s-7-4.4-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 5c-2.3 4.6-9.3 9-9.3 9Z"/></svg></a>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Changer de thème"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button>
+    <a class="btn btn-primary btn-sm nav-account" id="accountLink" href="profil.html">Mon compte</a>
   </div>
-  <div class="pad-x" style="display:flex;gap:10px;flex:0 0 auto;">
-    <div class="search-bar" style="flex:1;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Rechercher…</span></div>
-    <button class="icon-btn" style="width:48px;height:48px;background:var(--ink-900);color:#fff;" onclick="openSheet('filters')" aria-label="Filtres"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M8 17h12"/><circle cx="16" cy="7" r="2.2"/><circle cx="6" cy="17" r="2.2"/></svg></button>
+</div></header>
+<main id="main">
+
+<div class="container"><div class="page-head"><h1>Explorer les événements</h1><p>Filtrez par catégorie, date, quartier ou prix pour trouver l'événement qui vous correspond.</p></div>
+<div class="explore">
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
+  <aside class="filters" id="filters" aria-label="Filtres">
+    <div class="row-between" style="margin-bottom:8px"><h3 style="margin:0">Filtres</h3><button class="btn btn-ghost btn-sm" id="resetBtn" type="button">Réinitialiser</button></div>
+    <div class="fgroup"><h3>Catégorie</h3><div id="catChecks"></div></div>
+    <div class="fgroup"><h3>Prix</h3>
+      <label class="check"><input type="radio" name="price" value="all" checked> Tous</label>
+      <label class="check"><input type="radio" name="price" value="free"> Gratuit</label>
+      <label class="check"><input type="radio" name="price" value="paid"> Payant</label>
+      <div class="field" style="margin-top:10px"><label for="maxPrice">Prix maximum : <span id="maxOut">30&nbsp;000&nbsp;GNF</span></label><input type="range" id="maxPrice" min="0" max="30000" step="1000" value="30000"></div></div>
+    <div class="fgroup"><h3>Quartier</h3><select class="select" id="district" aria-label="Quartier"></select></div>
+    <div class="fgroup"><h3>Date</h3><div class="form-grid"><div class="field"><label for="from">Du</label><input class="input" type="date" id="from"></div><div class="field"><label for="to">Au</label><input class="input" type="date" id="to"></div></div>
+      <label class="check" style="margin-top:8px"><input type="checkbox" id="showPast"> Afficher les événements passés</label></div>
+    <button class="btn btn-primary btn-block filter-btn" id="closeFilters" type="button" style="margin-top:16px">Voir les résultats</button>
+  </aside>
+  <div>
+    <div class="field" style="margin-bottom:16px"><label class="sr-only" for="q">Rechercher</label><input class="input" id="q" type="search" placeholder="Rechercher un événement, un lieu, un organisateur…"></div>
+    <div class="toolbar"><span class="result-count" id="resultCount" aria-live="polite"></span>
+      <div style="display:flex;gap:10px"><button class="btn btn-outline filter-btn" id="openFilters" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M4 7h10M18 7h2M4 17h2M8 17h12"/><circle cx="16" cy="7" r="2.2"/><circle cx="6" cy="17" r="2.2"/></svg> Filtres</button>
+      <select class="select" id="sort" aria-label="Trier par" style="width:auto"><option value="date">Date</option><option value="price-asc">Prix croissant</option><option value="price-desc">Prix décroissant</option></select></div></div>
+    <div class="grid-cards" id="results"></div>
   </div>
-  <div class="chip-row" style="margin-top:14px;">
-    <span class="chip on" onclick="openSheet('filters')">Date : cette semaine</span>
-    <span class="chip" onclick="openSheet('filters')">Catégorie</span>
-    <span class="chip" onclick="openSheet('filters')">Lieu : Conakry</span>
-    <span class="chip" onclick="openSheet('filters')">Prix</span>
+</div></div>
+</main>
+<footer class="site-footer"><div class="container">
+  <div class="foot-grid">
+    <div><a class="brand" href="index.html"><span class="brand-mark" style="background:#2a2d35"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></span>EventGo</a>
+      <p>Découvrez et réservez les concerts, ateliers, expositions et rencontres de Conakry.</p><span class="flag"><i style="background:#E11D33"></i><i style="background:#F7B500"></i><i style="background:#12855B"></i></span></div>
+    <div><h4>Découvrir</h4><a href="explorer.html">Explorer</a><a href="carte.html">Carte des événements</a><a href="explorer.html?cat=Concert">Concerts</a><a href="explorer.html?cat=Atelier">Ateliers</a></div>
+    <div><h4>Mon espace</h4><a href="billets.html">Mes billets</a><a href="favoris.html">Favoris</a><a href="rappels.html">Rappels</a><a href="profil.html">Mon profil</a></div>
+    <div><h4>Aide</h4><a href="profil.html#parametres">Paramètres</a><a href="profil.html#notifications">Notifications</a><a href="prototype/index.html">Maquette mobile</a></div>
   </div>
-  <div class="section-row" style="margin-top:16px;"><span class="section-title">148 événements trouvés</span></div>
-  <div class="scroll">
-    <div class="vcards" style="padding-bottom:110px;">
-      <a class="card-h" href="detail.html" style="text-decoration:none;color:inherit;">
-        <div class="card-media" style="border-radius:14px;"><div class="photo-media"><img src="assets/img/concert.jpg" alt="Concert"><div class="scrim"></div></div></div>
-        <div class="card-body">
-          <span class="badge" style="background:#FCE7E9;color:#E11D33;width:fit-content;">Concert</span>
-          <div class="card-title">Nuit Acoustique — Kaloum</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>12 oct. · 20h</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Institut Franco-Guinéen</div>
-          <div class="card-price">25 000 GNF</div>
-        </div>
-      </a>
-      <a class="card-h" href="detail.html" style="text-decoration:none;color:inherit;">
-        <div class="card-media" style="border-radius:14px;"><div class="photo-media"><img src="assets/img/atelier.jpg" alt="Atelier"><div class="scrim"></div></div></div>
-        <div class="card-body">
-          <span class="badge" style="background:#FEF3D6;color:#8A6400;width:fit-content;">Atelier</span>
-          <div class="card-title">Atelier Couture &amp; Wax</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>15 oct. · 10h</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Matam, Conakry</div>
-          <div class="card-price">10 000 GNF</div>
-        </div>
-      </a>
-      <a class="card-h" href="detail.html" style="text-decoration:none;color:inherit;">
-        <div class="card-media" style="border-radius:14px;"><div class="photo-media"><img src="assets/img/exposition.jpg" alt="Exposition"><div class="scrim"></div></div></div>
-        <div class="card-body">
-          <span class="badge" style="background:#EAE7FC;color:#5C4CD1;width:fit-content;">Exposition</span>
-          <div class="card-title">Expo Photo — Regards de Guinée</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>18 oct. · 9h</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Palais du Peuple</div>
-          <div class="card-price">Gratuit</div>
-        </div>
-      </a>
-      <a class="card-h" href="detail.html" style="text-decoration:none;color:inherit;">
-        <div class="card-media" style="border-radius:14px;"><div class="photo-media"><img src="assets/img/educatif.jpg" alt="Éducatif"><div class="scrim"></div></div></div>
-        <div class="card-body">
-          <span class="badge" style="background:#E4ECFD;color:#2E5BC7;width:fit-content;">Éducatif</span>
-          <div class="card-title">Forum Jeunesse &amp; Numérique</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>21 oct. · 9h</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Université G. A. Nasser</div>
-          <div class="card-price">Gratuit</div>
-        </div>
-      </a>
-      <a class="card-h" href="detail.html" style="text-decoration:none;color:inherit;">
-        <div class="card-media" style="border-radius:14px;"><div class="photo-media"><img src="assets/img/rencontre.jpg" alt="Rencontre"><div class="scrim"></div></div></div>
-        <div class="card-body">
-          <span class="badge" style="background:#FFE7E2;color:#C4432B;width:fit-content;">Rencontre</span>
-          <div class="card-title">Soirée Rencontre Entrepreneurs</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>24 oct. · 18h</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Novotel Conakry</div>
-          <div class="card-price">15 000 GNF</div>
-        </div>
-      </a>
-      <a class="card-h" href="detail.html" style="text-decoration:none;color:inherit;">
-        <div class="card-media" style="border-radius:14px;"><div class="photo-media"><img src="assets/img/culturel.jpg" alt="Culturel"><div class="scrim"></div></div></div>
-        <div class="card-body">
-          <span class="badge" style="background:#E2F3EC;color:#0F6E4C;width:fit-content;">Culturel</span>
-          <div class="card-title">Festival Culturel de Guinée</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>2 nov. · 15h</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Stade du 28 Septembre</div>
-          <div class="card-price">30 000 GNF</div>
-        </div>
-      </a>
-      <a class="card-h" href="detail.html" style="text-decoration:none;color:inherit;">
-        <div class="card-media" style="border-radius:14px;"><div class="photo-media"><img src="assets/img/institutionnel.jpg" alt="Institutionnel"><div class="scrim"></div></div></div>
-        <div class="card-body">
-          <span class="badge" style="background:#E7E9ED;color:#495366;width:fit-content;">Institutionnel</span>
-          <div class="card-title">Cérémonie Officielle CNT</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>5 nov. · 10h</div>
-          <div class="card-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Palais Mohammed V</div>
-          <div class="card-price">Sur invitation</div>
-        </div>
-      </a>
-    </div>
-  </div>
-  <nav class="tabbar">
-    <a class="tab-item" href="accueil.html" aria-label="Accueil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg><span>Accueil</span></a>
-    <a class="tab-item active" href="explorer.html" aria-label="Explorer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Explorer</span></a>
-    <a class="tab-item" href="carte.html" aria-label="Carte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><span>Carte</span></a>
-    <a class="tab-item" href="billets.html" aria-label="Billets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a1.6 1.6 0 0 0 0 3.1V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.7a1.6 1.6 0 0 0 0-3.1V9Z"/><path d="M14 7v10" stroke-dasharray="2.2 2.2"/></svg><span>Billets</span></a>
-    <a class="tab-item" href="profil.html" aria-label="Profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg><span>Profil</span></a>
-  </nav>
-  <div class="sheet-backdrop" onclick="closeSheet('filters')" id="filters" style="display:none;">
-    <div class="sheet" style="display:block;" onclick="stopProp(event)">
-      <div class="sheet-handle"></div>
-      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;">Filtres</div>
-      <div class="filter-row"><span>Date</span><span class="filter-val">Cette semaine <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 6 6 6-6 6"/></svg></span></div>
-      <div class="filter-row"><span>Catégorie</span><span class="filter-val">Toutes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 6 6 6-6 6"/></svg></span></div>
-      <div class="filter-row"><span>Lieu</span><span class="filter-val">Conakry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 6 6 6-6 6"/></svg></span></div>
-      <div class="filter-row" style="border-bottom:none;"><span>Prix</span><span class="filter-val">Tous <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 6 6 6-6 6"/></svg></span></div>
-      <button class="btn btn-primary" style="margin-top:18px;" onclick="closeSheet('filters')">Appliquer les filtres</button>
-    </div>
-  </div>
-</div>
-<script src="assets/app.js"></script>
+  <div class="foot-bottom">© 2026 EventGo — Projet de démonstration : les événements, organisateurs et billets présentés sont fictifs, aucun paiement réel n'est effectué. Marques Orange Money et MTN Mobile Money citées à titre d'illustration.</div>
+</div></footer>
+<nav class="bottom-nav" aria-label="Navigation mobile"><a data-nav-link="home" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg><span>Accueil</span></a><a data-nav-link="explorer" href="explorer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg><span>Explorer</span></a><a data-nav-link="carte" href="carte.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><span>Carte</span></a><a data-nav-link="billets" href="billets.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a1.6 1.6 0 0 0 0 3.1V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.7a1.6 1.6 0 0 0 0-3.1V9Z"/><path d="M14 7v10" stroke-dasharray="2.2 2.2"/></svg><span>Billets</span></a><a data-nav-link="profil" href="profil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg><span>Profil</span></a></nav>
+<script src="assets/data.js"></script>
+<script src="assets/core.js"></script>
+
+<script src="assets/pages.js"></script>
 </body>
 </html>
