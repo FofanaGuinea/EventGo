@@ -1,0 +1,54 @@
+/* EventGo — UI theme: modern, warm neutral ground, Guinea-inspired accents
+   used sparingly (buttons, badges, categories, active states). Loaded after base.css. */
+:root{
+  --font-display:'Sora',sans-serif;
+  --font-body:'Manrope',sans-serif;
+
+  --ink-900:#15171B;
+  --ink-700:#3A3D44;
+  --ink-600:#565A62;
+  --ink-500:#767B85;
+  --ink-400:#9CA1AA;
+  --ink-300:#D8DADE;
+
+  --bg:#FAF9F6;
+  --surface:#FFFFFF;
+  --surface-alt:#F1EFE9;
+  --border:#E7E4DC;
+  --on-dark:#FFFFFF;
+
+  --brand-mark-bg:#171A20;
+
+  --accent-red:#E11D33;
+  --accent-red-10:#FCE7E9;
+  --accent-yellow:#F7B500;
+  --accent-yellow-10:#FEF3D6;
+  --accent-green:#12855B;
+  --accent-green-10:#E2F3EC;
+  --accent-blue:#2E6BE6;
+  --accent-violet:#6C5CE7;
+  --accent-coral:#FF6F59;
+  --accent-slate:#495366;
+
+  --radius-sm:8px;
+  --radius-md:14px;
+  --radius-lg:20px;
+  --radius-pill:999px;
+
+  --shadow-card:0 10px 24px rgba(21,23,27,0.09);
+}
+.screen{background:var(--bg);}
+.brand-mark svg{color:#fff;}
+
+/* Photo media used by event cards, hero images and small thumbnails. */
+.photo-media{width:100%;height:100%;position:relative;overflow:hidden;}
+.photo-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.photo-media .scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0) 32%, rgba(0,0,0,0) 68%, rgba(0,0,0,0.30) 100%);}
+.pay-opt{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 8px;
+  border-radius:var(--radius-md);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;}
+.pay-opt span{font-family:'Manrope',sans-serif;font-weight:700;font-size:11.5px;color:var(--ink-700);}
+.pay-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-weight:800;font-size:12px;color:#fff;box-sizing:border-box;}
+.pay-opt.om.selected{border-color:#FF7900;background:#FFF3E8;box-shadow:0 6px 16px rgba(255,121,0,0.16);}
+.pay-opt.mm.selected{border-color:#FFCC00;background:#FFFBE0;box-shadow:0 6px 16px rgba(255,204,0,0.20);}
+.pay-opt.card.selected{border-color:var(--ink-900);background:var(--surface-alt);box-shadow:0 6px 16px rgba(21,23,27,0.12);}

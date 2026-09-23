@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventGo — Maquette UI — Rappels</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/ui-theme.css">
+<style>
+  .reminder{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:16px;padding:14px;box-shadow:var(--shadow-card);}</style>
+</head>
+<body>
+<div class="screen">
+  <div class="safe-top"></div>
+  <div class="header">
+    <a class="icon-btn" href="u-accueil.html" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span class="header-title">Rappels</span>
+  </div>
+  <div class="scroll">
+    <div class="pad-x" style="display:flex;flex-direction:column;gap:12px;padding-bottom:24px;">
+      <div class="reminder">
+        <div style="width:54px;height:54px;border-radius:13px;flex:0 0 auto;background:linear-gradient(135deg,#E11D33,#8E1727);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" style="width:20px;height:20px;"><rect x="7" y="10" width="2.6" height="7"/><rect x="11" y="6" width="2.6" height="11"/><rect x="15" y="12" width="2.6" height="5"/></svg></div>
+        <div class="grow"><div class="card-title" style="font-size:14px;">Nuit Acoustique — Kaloum</div><div class="card-meta">Rappel : 12 oct., 18h00 (2h avant)</div></div>
+        <div class="sw on" onclick="toggleSwitch(this)"><div class="knob"></div></div>
+      </div>
+      <div class="reminder">
+        <div style="width:54px;height:54px;border-radius:13px;flex:0 0 auto;background:linear-gradient(135deg,#2E6BE6,#1E4DB5);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" style="width:20px;height:20px;"><rect x="7" y="10" width="2.6" height="7"/><rect x="11" y="6" width="2.6" height="11"/><rect x="15" y="12" width="2.6" height="5"/></svg></div>
+        <div class="grow"><div class="card-title" style="font-size:14px;">Forum Jeunesse &amp; Numérique</div><div class="card-meta">Rappel : 21 oct., 8h00 (1h avant)</div></div>
+        <div class="sw on" onclick="toggleSwitch(this)"><div class="knob"></div></div>
+      </div>
+      <div class="reminder">
+        <div style="width:54px;height:54px;border-radius:13px;flex:0 0 auto;background:linear-gradient(135deg,#12855B,#0B5E40);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" style="width:20px;height:20px;"><rect x="7" y="10" width="2.6" height="7"/><rect x="11" y="6" width="2.6" height="11"/><rect x="15" y="12" width="2.6" height="5"/></svg></div>
+        <div class="grow"><div class="card-title" style="font-size:14px;">Festival Culturel de Guinée</div><div class="card-meta">Rappel : 2 nov., 13h00 (2h avant)</div></div>
+        <div class="sw" onclick="toggleSwitch(this)"><div class="knob"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

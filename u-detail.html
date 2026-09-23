@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventGo — Maquette UI — Détail événement</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/ui-theme.css">
+<style>
+  .hero{width:100%;height:300px;position:relative;flex:0 0 auto;overflow:hidden;}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.22) 100%);}
+  .hero-actions{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:16px;z-index:2;}
+  .hero-actions .right{display:flex;gap:10px;}
+  .stat{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 8px;background:var(--surface-alt);border-radius:var(--radius-md);flex:1;}
+  .stat b{font-family:'Sora',sans-serif;font-size:14.5px;}
+  .stat span{font-size:11px;color:var(--ink-500);}
+  .organizer{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface-alt);border-radius:var(--radius-md);}
+  .organizer .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#E11D33,#F7B500);display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:#fff;font-family:'Sora',sans-serif;font-weight:700;}
+  .verified{display:inline-flex;align-items:center;gap:4px;color:var(--accent-green);font-size:11.5px;font-weight:700;}
+  .share-overlay{position:absolute;inset:0;background:rgba(15,16,20,0.45);z-index:6;display:flex;align-items:flex-end;}
+  .share-sheet{background:#fff;width:100%;border-radius:24px 24px 0 0;padding:20px;}
+  .share-opt{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--ink-600);}
+  .share-opt .ic{width:50px;height:50px;border-radius:50%;background:var(--surface-alt);display:flex;align-items:center;justify-content:center;}</style>
+</head>
+<body>
+<div class="screen">
+  <div class="scroll">
+    <div class="hero"><img src="assets/img/concert.jpg" alt="Concert"><div class="scrim"></div>
+      <div class="hero-actions">
+        <a class="icon-btn" href="u-accueil.html" style="background:rgba(255,255,255,0.92);border:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+        <div class="right">
+          <button class="icon-btn" style="background:rgba(255,255,255,0.92);border:none;" data-on="0" onclick="toggleFav(this,'#E11D33')" aria-label="Favori"><svg viewBox="0 0 24 24" fill="none" stroke="#E11D33" stroke-width="1.8"><path d="M12 20s-7-4.4-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 5c-2.3 4.6-9.3 9-9.3 9Z"/></svg></button>
+          <button class="icon-btn" style="background:rgba(255,255,255,0.92);border:none;" onclick="openSheet('share')" aria-label="Partager"><svg viewBox="0 0 24 24" fill="none" stroke="#15171B" stroke-width="1.8"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="M8 10.8 16 6.2M8 13.2l8 4.6"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="pad-x" style="padding-top:18px;">
+      <span class="badge" style="background:#FCE7E9;color:#E11D33;">Concert</span>
+      <h1 style="font-family:'Sora',sans-serif;font-weight:800;font-size:23px;margin:10px 0 6px;">Nuit Acoustique — Kaloum</h1>
+      <div class="card-meta" style="font-size:13.5px;margin-bottom:3px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Samedi 12 octobre 2026 · 20h00</div>
+      <div class="card-meta" style="font-size:13.5px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>Institut Franco-Guinéen, Kaloum</div>
+      <div class="row" style="margin-top:20px;gap:10px;">
+        <div class="stat"><b><span style="color:var(--accent-green);">25 000 GNF</span></b><span>Prix</span></div>
+        <div class="stat"><b>48 / 120</b><span>Places restantes</span></div>
+        <div class="stat"><b>2h30</b><span>Durée</span></div>
+      </div>
+      <div class="section-title" style="padding:0;margin:22px 0 8px;">Description</div>
+      <p style="font-family:'Manrope',sans-serif;font-size:14px;line-height:1.6;color:var(--ink-600);margin:0;">
+        Une soirée intimiste réunissant de jeunes artistes acoustiques de Conakry. Ambiance chaleureuse,
+        scène ouverte et découverte de nouveaux talents guinéens. Places limitées, réservation conseillée.
+      </p>
+      <div class="section-title" style="padding:0;margin:22px 0 8px;">Organisateur</div>
+      <div class="organizer"><div class="av">CS</div><div><div style="font-weight:700;font-size:14.5px;">Collectif Sons de Kaloum</div><div class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" width="12" height="12"><path d="m5 13 4 4 10-10"/></svg>Organisateur vérifié</div></div></div>
+      <div style="height:130px;"></div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-bar-row"><span class="bottom-bar-label">À partir de</span><span class="bottom-bar-value" style="color:var(--accent-green);">25 000 GNF</span></div>
+    <a class="btn btn-primary" href="u-reservation.html" style="display:flex;">Réserver ma place</a>
+  </div>
+  <div class="share-overlay" onclick="closeSheet('share')" id="share" style="display:none;">
+    <div class="share-sheet" onclick="stopProp(event)">
+      <div style="width:36px;height:4px;background:var(--ink-300);border-radius:2px;margin:0 auto 16px;"></div>
+      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:16px;margin-bottom:16px;">Partager cet événement</div>
+      <div class="row" style="justify-content:space-between;">
+        <div class="share-opt"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="M8 10.8 16 6.2M8 13.2l8 4.6"/></svg></div>WhatsApp</div>
+        <div class="share-opt"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.6-3.6 4.4-5.4 7.5-5.4s5.9 1.8 7.5 5.4"/></svg></div>Messenger</div>
+        <div class="share-opt"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>SMS</div>
+        <div class="share-opt"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div>Copier</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

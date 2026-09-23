@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventGo — Maquette UI — Réservation</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/ui-theme.css">
+<style>
+  .summary-card{display:flex;gap:12px;background:var(--surface-alt);border-radius:var(--radius-md);padding:12px;}
+  .recap-row{display:flex;justify-content:space-between;font-family:'Manrope',sans-serif;font-size:13.5px;padding:7px 0;color:var(--ink-500);}
+  .recap-row b{color:var(--ink-900);font-weight:700;}
+  .stepper-btn{width:36px;height:36px;border-radius:10px;border:none;display:flex;align-items:center;justify-content:center;background:var(--surface);box-shadow:0 2px 6px rgba(0,0,0,0.1);font-size:17px;font-weight:700;color:var(--accent-red);}</style>
+</head>
+<body>
+<div class="screen">
+  <div class="safe-top"></div>
+  <div class="header">
+    <a class="icon-btn" href="u-detail.html" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span class="header-title">Réservation</span>
+  </div>
+  <div class="scroll">
+    <div class="pad-x" style="display:flex;flex-direction:column;gap:20px;padding-bottom:24px;">
+      <div class="summary-card">
+        <div style="width:76px;height:76px;border-radius:14px;flex:0 0 auto;overflow:hidden;"><img src="assets/img/concert.jpg" alt="Nuit Acoustique — Kaloum" style="width:100%;height:100%;object-fit:cover;"></div>
+        <div>
+          <div class="card-title" style="font-size:14.5px;">Nuit Acoustique — Kaloum</div>
+          <div class="card-meta">12 oct. 2026 · 20h00</div>
+          <div class="card-meta">Institut Franco-Guinéen</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Nombre de billets</label>
+        <div class="input stepper">
+          <span id="qtyVal" data-qty="2" style="font-weight:700;">2 billet(s)</span>
+          <div class="row" style="gap:10px;">
+            <button class="stepper-btn" onclick="stepQty(-1,1,8,25000,2000)">−</button>
+            <button class="stepper-btn" onclick="stepQty(1,1,8,25000,2000)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="field"><label>Nom complet</label><div class="input">Mamadou Diallo</div></div>
+      <div class="field"><label>Numéro de téléphone</label><div class="input focused" style="border-color:var(--accent-red);">+224 6__ __ __ __</div></div>
+      <div class="field"><label>Adresse e-mail</label><div class="input">exemple@mail.com</div></div>
+      <div>
+        <div class="section-title" style="padding:0;margin-bottom:10px;">Mode de paiement</div>
+        <div class="row" style="gap:10px;">
+          <div class="pay-opt om selected" id="pay-om" onclick="selectPay('om')"><div class="pay-badge" style="background:#14171A;padding:0;overflow:hidden;"><img src="assets/img/orange-money-logo.png" alt="Orange Money" style="width:100%;height:100%;object-fit:cover;"></div><span>Orange Money</span></div>
+          <div class="pay-opt mm" id="pay-mm" onclick="selectPay('mm')"><div class="pay-badge" style="background:#FFCC00;padding:7px;"><img src="assets/img/mtn-logo.svg" alt="MTN Mobile Money" style="width:100%;height:100%;object-fit:contain;"></div><span>Mobile Money</span></div>
+          <div class="pay-opt card" id="pay-card" onclick="selectPay('card')"><div class="pay-badge" style="background:linear-gradient(135deg,#1F2430,#3A4256);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><span>Carte bancaire</span></div>
+        </div>
+        <div id="payfields-om" style="margin-top:14px;">
+          <div class="field"><label>Numéro Orange Money</label><div class="input focused" style="border-color:#FF7900;">+224 6__ __ __ __</div></div>
+        </div>
+        <div id="payfields-mm" style="display:none;margin-top:14px;">
+          <div class="field"><label>Numéro Mobile Money</label><div class="input focused" style="border-color:#E8B800;">+224 6__ __ __ __</div></div>
+        </div>
+        <div id="payfields-card" style="display:none;margin-top:14px;">
+          <div class="field"><label>Numéro de carte</label><div class="input">•••• •••• •••• ••••</div></div>
+          <div class="row" style="gap:10px;margin-top:10px;">
+            <div class="field" style="flex:1;"><label>Expiration</label><div class="input">MM/AA</div></div>
+            <div class="field" style="flex:1;"><label>CVV</label><div class="input">•••</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title" style="padding:0;margin-bottom:8px;">Récapitulatif</div>
+        <div class="recap-row"><span>Billet × <span id="qtyLabel">2</span></span><b id="subtotalVal">50 000 GNF</b></div>
+        <div class="recap-row"><span>Frais de service</span><b>2 000 GNF</b></div>
+        <div class="divider" style="margin:8px 0;"></div>
+        <div class="recap-row"><span style="font-weight:700;color:var(--ink-900);">Total à payer</span><b style="font-size:17px;color:var(--accent-green);" id="totalVal">52 000 GNF</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <a class="btn btn-primary" href="u-confirmation.html" style="display:flex;">Confirmer la réservation</a>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

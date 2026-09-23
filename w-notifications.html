@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventGo — Wireframe — Notifications</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/wireframe-theme.css">
+<style>
+  .notif-row{display:flex;align-items:center;gap:12px;padding:15px 20px;border-bottom:1px solid #E2E2E2;}
+  .notif-row .txt b{display:block;font-family:'Manrope',sans-serif;font-weight:700;font-size:13.5px;}
+  .notif-row .txt span{font-family:'Manrope',sans-serif;font-size:12px;color:#7A7A7A;}
+  .sw{width:44px;height:26px;border-radius:13px;background:#D2D2D2;position:relative;flex:0 0 auto;margin-left:auto;}
+  .sw .knob{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid #B7B7B7;}
+  .sw.on{background:#3D3D3D;}
+  .sw.on .knob{left:20px;}</style>
+</head>
+<body>
+<div class="screen">
+  <div class="safe-top"></div>
+  <div class="header">
+    <a class="icon-btn" href="w-profil.html" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span class="header-title">Notifications</span>
+  </div>
+  <div class="scroll">
+    <div class="notif-row"><div class="txt"><b>Notifications push</b><span>Autoriser les alertes de l'application</span></div><div class="sw on" onclick="toggleSwitch(this)"><div class="knob"></div></div></div>
+    <div class="notif-row"><div class="txt"><b>Rappels d'événements</b><span>Avant chaque événement réservé</span></div><div class="sw on" onclick="toggleSwitch(this)"><div class="knob"></div></div></div>
+    <div class="notif-row"><div class="txt"><b>Événements près de moi</b><span>Nouveaux événements à Conakry</span></div><div class="sw on" onclick="toggleSwitch(this)"><div class="knob"></div></div></div>
+    <div class="notif-row"><div class="txt"><b>Offres et promotions</b><span>Réductions et billets à prix réduit</span></div><div class="sw" onclick="toggleSwitch(this)"><div class="knob"></div></div></div>
+    <div class="notif-row" style="border-bottom:none;"><div class="txt"><b>Résumé hebdomadaire</b><span>Par e-mail, chaque lundi</span></div><div class="sw" onclick="toggleSwitch(this)"><div class="knob"></div></div></div>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

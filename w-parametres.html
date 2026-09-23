@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventGo — Wireframe — Paramètres</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/wireframe-theme.css">
+<style>
+  .set-row{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid #E2E2E2;}
+  .set-row span{font-family:'Manrope',sans-serif;font-weight:600;font-size:14px;}
+  .set-val{display:flex;align-items:center;gap:6px;color:#7A7A7A;font-size:13px;font-weight:500;}
+  .sw{width:44px;height:26px;border-radius:13px;background:#D2D2D2;position:relative;flex:0 0 auto;}
+  .sw .knob{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid #B7B7B7;}
+  .sw.on{background:#3D3D3D;}
+  .sw.on .knob{left:20px;}
+  .group-label{padding:18px 20px 8px;font-family:'Manrope',sans-serif;font-weight:700;font-size:11.5px;color:#7A7A7A;text-transform:uppercase;letter-spacing:0.3px;}</style>
+</head>
+<body>
+<div class="screen">
+  <div class="safe-top"></div>
+  <div class="header">
+    <a class="icon-btn" href="w-profil.html" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <span class="header-title">Paramètres</span>
+  </div>
+  <div class="scroll">
+    <div class="group-label">Préférences</div>
+    <div class="set-row"><span>Langue</span><span class="set-val">Français ›</span></div>
+    <div class="set-row"><span>Devise</span><span class="set-val">GNF (Franc guinéen) ›</span></div>
+    <div class="set-row"><span>Mode sombre</span><div class="sw" onclick="toggleSwitch(this)"><div class="knob"></div></div></div>
+    <div class="group-label">Compte</div>
+    <div class="set-row"><span>Modifier le profil</span><span class="set-val">›</span></div>
+    <div class="set-row"><span>Confidentialité</span><span class="set-val">›</span></div>
+    <div class="set-row"><span>Conditions d'utilisation</span><span class="set-val">›</span></div>
+    <div class="group-label">À propos</div>
+    <div class="set-row" style="border-bottom:none;"><span>Version de l'application</span><span class="set-val">1.0.0</span></div>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>
