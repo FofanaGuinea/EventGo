@@ -1,0 +1,1 @@
+{ "name": "eventgo-figma-export", "private": true, "dependencies": { "dom-to-svg": "^0.12.2", "esbuild": "^0.25.0" } }

@@ -1,0 +1,217 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>EventGo → Figma export driver</title>
+<body style="margin:0"><pre id="o">starting</pre>
+<iframe id="f" style="border:0;position:absolute;left:0;top:60px;width:1440px;height:900px;background:#fff"></iframe>
+<script>
+function log(m) { document.getElementById('o').textContent = m; fetch('/__log?' + encodeURIComponent(m)).catch(function () {}); }
+function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+var f = document.getElementById('f');
+function load(u) { return new Promise(function (r) { f.onload = function () { r(); }; f.src = u; }); }
+
+function seed(theme) {
+  localStorage.clear();
+  localStorage.setItem('eg_settings', JSON.stringify({ dark: theme === 'dark' }));
+  localStorage.setItem('eg_tickets', JSON.stringify([{ ref: 'EVG-DEMO-0001', eventId: 'nuit-acoustique', qty: 2, unit: 25000, fee: 2000, total: 52000, method: 'om', holder: { name: 'Mamadou Diallo', email: 'mamadou@exemple.com', phone: '+224 622 00 00 00' }, createdAt: '2026-09-20T10:00:00Z' }]));
+  localStorage.setItem('eg_favs', JSON.stringify(['nuit-acoustique', 'expo-regards-de-guinee', 'festival-culturel']));
+  localStorage.setItem('eg_reminders', JSON.stringify({ 'nuit-acoustique': { on: true, lead: 120 }, 'forum-jeunesse-numerique': { on: true, lead: 60 } }));
+  localStorage.setItem('eg_profile', JSON.stringify({ name: 'Mamadou Diallo', email: 'mamadou@exemple.com', phone: '+224 622 00 00 00' }));
+}
+
+function loadImg(src) { return new Promise(function (res, rej) { var i = new Image(); i.onload = function () { res(i); }; i.onerror = rej; i.src = src; }); }
+
+// Replace every <img> by a pre-cropped data: URI that matches its box exactly
+// (object-fit is resolved here), so the SVG is self-contained and Figma shows
+// the same crop as the browser.
+async function bakeImages(d, w) {
+  var imgs = Array.prototype.slice.call(d.images);
+  for (var k = 0; k < imgs.length; k++) {
+    var im = imgs[k], r = im.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) continue;
+    var src = im.currentSrc || im.src; if (!src || src.indexOf('data:') === 0) continue;
+    var cs = w.getComputedStyle(im), fit = cs.objectFit;
+    var isSvg = /\.svg(\?|$)/.test(src), isPng = /\.png(\?|$)/.test(src);
+    var nat;
+    try {
+      if (src.indexOf(location.origin) === 0) nat = await loadImg(src);
+      else { var rs = await fetch(src, { mode: 'cors' }); nat = await loadImg(URL.createObjectURL(await rs.blob())); } // e.g. map tiles: fetch as blob so the canvas is not tainted
+    } catch (e) { continue; }
+    var nw = nat.naturalWidth, nh = nat.naturalHeight;
+    if (isSvg || !nw || !nh) {
+      try { var t = await (await fetch(src)).text(); var m = /viewBox="([\d.\s-]+)"/.exec(t); if (m) { var p = m[1].trim().split(/\s+/).map(Number); nw = p[2]; nh = p[3]; } } catch (e) {}
+      if (!nw || !nh) { nw = r.width; nh = r.height; }
+    }
+    var sc = 1.5, cw = Math.min(1800, Math.round(r.width * sc)), ch = Math.round(cw * r.height / r.width);
+    var c = document.createElement('canvas'); c.width = cw; c.height = ch; var g = c.getContext('2d');
+    if (fit === 'contain') { var s = Math.min(cw / nw, ch / nh), dw = nw * s, dh = nh * s; g.drawImage(nat, (cw - dw) / 2, (ch - dh) / 2, dw, dh); }
+    else if (fit === 'cover') { var s2 = Math.max(cw / nw, ch / nh), sw = cw / s2, sh = ch / s2; g.drawImage(nat, (nw - sw) / 2, (nh - sh) / 2, sw, sh, 0, 0, cw, ch); }
+    else { g.drawImage(nat, 0, 0, cw, ch); }
+    var jpg = !isPng && !isSvg && fit !== 'contain', url;
+    try { url = c.toDataURL(jpg ? 'image/jpeg' : 'image/png', 0.88); } catch (e) { continue; }
+    im.removeAttribute('loading'); im.removeAttribute('srcset'); im.style.objectFit = 'fill';
+    im.src = url;
+    await new Promise(function (r2) { if (im.complete) r2(); else im.onload = r2; });
+  }
+}
+
+// The converter ignores form controls (select, checkbox, radio, range) and placeholders:
+// swap them for plain styled boxes/text so they appear in the export.
+function prepInputs(d, w) {
+  function box(sp, cs, r) {
+    ['boxSizing', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth', 'borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle', 'borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor', 'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius', 'backgroundColor', 'color', 'fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'margin'].forEach(function (p) { sp.style[p] = cs[p]; });
+    sp.style.width = r.width + 'px'; sp.style.height = r.height + 'px'; sp.style.flex = 'none';
+    sp.style.display = 'flex'; sp.style.alignItems = 'center';
+  }
+  Array.prototype.slice.call(d.querySelectorAll('input,textarea,select')).forEach(function (el) {
+    var cs = w.getComputedStyle(el), r = el.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1 || cs.visibility === 'hidden' || cs.display === 'none') return;
+    var tag = el.tagName, type = (el.type || '').toLowerCase(), sp;
+    if (tag === 'SELECT') {
+      sp = d.createElement('span'); box(sp, cs, r); sp.style.justifyContent = 'space-between';
+      var t = d.createElement('span'); t.textContent = el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : '';
+      var ch = d.createElement('span'); ch.textContent = '▾'; ch.style.fontSize = '12px'; ch.style.marginLeft = '8px';
+      sp.appendChild(t); sp.appendChild(ch); el.replaceWith(sp); return;
+    }
+    if (type === 'checkbox' || type === 'radio') {
+      if (cs.opacity === '0') { // visually hidden inputs (switch, payment radios): bake the state into the styled sibling, then drop the input
+        var sib = el.nextElementSibling;
+        if (el.checked && sib && el.parentElement.classList.contains('switch')) sib.style.background = '#12855B';
+        el.remove(); return;
+      }
+      sp = d.createElement('span'); var rad = type === 'radio', on = el.checked;
+      sp.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;flex:none;box-sizing:border-box;width:' + r.width + 'px;height:' + r.height + 'px;margin:' + cs.margin + ';border:2px solid ' + (on ? '#E11D33' : '#767B85') + ';border-radius:' + (rad ? '50%' : '5px') + ';background:' + (on && !rad ? '#E11D33' : '#fff') + ';color:#fff;font:700 12px Manrope,sans-serif';
+      if (on && !rad) sp.textContent = '✓';
+      if (on && rad) { var dot = d.createElement('span'); dot.style.cssText = 'width:8px;height:8px;border-radius:50%;background:#E11D33;display:block'; sp.appendChild(dot); }
+      el.replaceWith(sp); return;
+    }
+    if (type === 'range') {
+      var min = +el.min || 0, max = +el.max || 100, pct = Math.max(0, Math.min(100, (+el.value - min) / (max - min) * 100));
+      sp = d.createElement('span'); sp.style.cssText = 'display:block;position:relative;flex:none;width:' + r.width + 'px;height:' + r.height + 'px;margin:' + cs.margin;
+      sp.innerHTML = '<span style="position:absolute;left:0;right:0;top:50%;height:6px;margin-top:-3px;border-radius:3px;background:#E7E4DC"></span><span style="position:absolute;left:0;top:50%;height:6px;margin-top:-3px;border-radius:3px;background:#E11D33;width:' + pct + '%"></span><span style="position:absolute;top:50%;left:calc(' + pct + '% - 9px);width:18px;height:18px;margin-top:-9px;border-radius:50%;background:#E11D33;border:3px solid #fff;box-sizing:border-box"></span>';
+      el.replaceWith(sp); return;
+    }
+    if (type === 'hidden' || type === 'file' || type === 'submit' || type === 'button') return;
+    // text-like fields: show the placeholder as text when empty
+    if (!el.value) {
+      var ph = el.getAttribute('placeholder') || (type === 'date' ? 'jj/mm/aaaa' : '');
+      if (ph) { if (type === 'date' || type === 'search' || type === 'email' || type === 'tel') el.type = 'text'; el.value = ph; el.style.color = 'rgb(118,123,133)'; }
+    }
+  });
+}
+
+// Tidy the SVG for Figma: drop empty layers, give groups readable names (Figma uses id as layer name).
+function finalize(svgText, width, height) {
+  var doc = new DOMParser().parseFromString(svgText, 'image/svg+xml'), root = doc.documentElement;
+  // external images cannot be resolved by Figma: drop any that were not embedded
+  root.querySelectorAll('image').forEach(function (im) { var h = im.getAttribute('xlink:href') || im.getAttribute('href') || ''; if (h.indexOf('data:') !== 0) im.remove(); });
+  // the converter writes vertical gradients (180deg) with a zero-length vector: make them top→bottom
+  root.querySelectorAll('linearGradient').forEach(function (g) {
+    if (g.getAttribute('x1') === g.getAttribute('x2') && g.getAttribute('y1') === g.getAttribute('y2')) { g.setAttribute('x1', '0%'); g.setAttribute('y1', '0%'); g.setAttribute('x2', '0%'); g.setAttribute('y2', '100%'); }
+  });
+  // readable names for the "stacking layer" groups
+  var LAYER = { rootBackgroundAndBorders: 'fond', childStackingContextsWithNegativeStackLevels: 'arriere-plan', inFlowNonInlineNonPositionedDescendants: 'contenu', nonPositionedFloats: 'flottants', inFlowInlineLevelNonPositionedDescendants: 'texte', childStackingContextsWithStackLevelZeroAndPositionedDescendantsWithStackLevelZero: 'positionnes', childStackingContextsWithStackLevelZeroAndPositionedDescendantsWithStackLevelZeroOrAuto: 'positionnes', childStackingContextsWithPositiveStackLevels: 'premier-plan' };
+  var used = {}; root.querySelectorAll('[id]').forEach(function (e) { used[e.id] = 1; });
+  var count = {};
+  root.querySelectorAll('g[data-stacking-layer]').forEach(function (g) {
+    var n = LAYER[g.getAttribute('data-stacking-layer')] || 'calque';
+    count[n] = (count[n] || 0) + 1; var id = count[n] === 1 ? n : n + '-' + count[n];
+    while (used[id]) { count[n]++; id = n + '-' + count[n]; }
+    used[id] = 1; g.setAttribute('id', id);
+  });
+  // the converter appends <img> groups after positioned siblings (badges, buttons), which then get covered: put them back underneath
+  root.querySelectorAll('g').forEach(function (g) {
+    var kids = Array.prototype.slice.call(g.children);
+    var firstTop = kids.filter(function (k) { return /^(premier-plan|positionnes)/.test(k.id || ''); })[0];
+    if (!firstTop) return;
+    kids.forEach(function (k) {
+      var isImg = /^img\d*$/.test(k.id || '');
+      var isPseudo = /^span\d+$/.test(k.id || '') && !k.getAttribute('class') && !k.querySelector('text'); // ::before/::after overlays
+      if ((isImg || isPseudo) && kids.indexOf(k) > kids.indexOf(firstTop)) g.insertBefore(k, firstTop);
+    });
+  });
+  // drop empty groups (head/meta/script placeholders, unused layers) until stable
+  for (var pass = 0; pass < 8; pass++) {
+    var removed = 0;
+    root.querySelectorAll('g').forEach(function (g) { if (!g.firstElementChild && !g.textContent.trim()) { g.remove(); removed++; } });
+    if (!removed) break;
+  }
+  // colours: Figma reads #rrggbb + separate opacity most reliably (rgba() and color(srgb …) may lose alpha)
+  function hex2(n) { n = Math.max(0, Math.min(255, Math.round(n))); return (n < 16 ? '0' : '') + n.toString(16); }
+  function parseColor(v) {
+    v = (v || '').trim(); var m, a = 1;
+    m = /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:\s*[,\/]\s*([\d.]+%?))?\s*\)$/.exec(v);
+    if (m) { if (m[4] != null) a = /%$/.test(m[4]) ? parseFloat(m[4]) / 100 : parseFloat(m[4]); return { hex: '#' + hex2(m[1]) + hex2(m[2]) + hex2(m[3]), a: a }; }
+    m = /^color\(\s*srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+%?))?\s*\)$/.exec(v);
+    if (m) { if (m[4] != null) a = /%$/.test(m[4]) ? parseFloat(m[4]) / 100 : parseFloat(m[4]); return { hex: '#' + hex2(m[1] * 255) + hex2(m[2] * 255) + hex2(m[3] * 255), a: a }; }
+    return null;
+  }
+  [['fill', 'fill-opacity'], ['stroke', 'stroke-opacity'], ['stop-color', 'stop-opacity'], ['color', null], ['flood-color', 'flood-opacity']].forEach(function (pair) {
+    root.querySelectorAll('[' + pair[0] + ']').forEach(function (e) {
+      var pc = parseColor(e.getAttribute(pair[0])); if (!pc) return;
+      e.setAttribute(pair[0], pc.hex);
+      if (pair[1] && pc.a < 1) e.setAttribute(pair[1], String(Math.round(pc.a * 1000) / 1000 * (parseFloat(e.getAttribute(pair[1]) || '1'))));
+    });
+  });
+  // strip accessibility / debug attributes (not useful in Figma, keeps files lighter)
+  root.querySelectorAll('*').forEach(function (e) {
+    Array.prototype.slice.call(e.attributes).forEach(function (a) { if (/^(aria-|data-|role$)/.test(a.name)) e.removeAttribute(a.name); });
+  });
+  ['aria-owns', 'data-stacking-context'].forEach(function (a) { root.removeAttribute(a); });
+  root.setAttribute('width', width); root.setAttribute('height', height); root.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+  return new XMLSerializer().serializeToString(doc);
+}
+
+async function settle(extra) {
+  var d = f.contentDocument;
+  try { await d.fonts.ready; } catch (e) {}
+  for (var i = 0; i < 40; i++) {
+    var imgs = Array.prototype.slice.call(d.images);
+    if (imgs.every(function (im) { return im.complete; })) break;
+    await sleep(250);
+  }
+  await sleep(extra || 900);
+}
+
+(async function () {
+  try {
+    var jobs = await (await fetch('/__tool/jobs.json')).json();
+    var bundle = await (await fetch('/__tool/bundle.js')).text();
+    log('jobs: ' + jobs.length);
+    for (var i = 0; i < jobs.length; i++) {
+      var j = jobs[i];
+      try {
+        seed(j.theme || 'light');
+        f.style.width = j.width + 'px'; f.style.height = (j.height || 900) + 'px';
+        var parts = j.url.split('#'), bust = parts[0] + (parts[0].indexOf('?') > -1 ? '&' : '?') + '_j=' + i + Date.now() % 1000 + (parts[1] ? '#' + parts[1] : '');
+        await Promise.race([load(bust), sleep(20000)]);
+        var w = f.contentWindow, d = f.contentDocument;
+        // make the export deterministic: no fixed/sticky chrome floating over content, no motion
+        var st = d.createElement('style');
+        st.textContent = 'html{overflow:hidden!important}*{transition:none!important;animation:none!important}' + (j.fullPage
+          ? '.bottom-nav,.sticky-cta{position:static!important}body{padding-bottom:0!important}.site-header{position:static!important;backdrop-filter:none!important}'
+          : '');
+        d.head.appendChild(st);
+        await settle(j.wait || 1200);
+        if (j.fullPage) {
+          var h = Math.max(d.documentElement.scrollHeight, d.body.scrollHeight);
+          f.style.height = h + 'px';
+          await settle(900);
+          h = Math.max(d.documentElement.scrollHeight, d.body.scrollHeight);
+          f.style.height = h + 'px';
+          await sleep(300);
+        }
+        prepInputs(d, w);
+        await bakeImages(d, w);
+        await sleep(200);
+        var s = d.createElement('script'); s.textContent = bundle; d.head.appendChild(s);
+        var svg = await w.__egToSVG({ keepLinks: false });
+        var fw = j.width, fh = Math.round(parseFloat(f.style.height));
+        svg = finalize(svg, fw, fh);
+        await fetch('/__save?name=' + encodeURIComponent(j.out), { method: 'POST', body: svg });
+        log('done ' + (i + 1) + '/' + jobs.length + ' ' + j.out);
+      } catch (e) { log('ERROR ' + j.out + ' ' + (e && e.message)); }
+    }
+    log('ALLDONE');
+  } catch (e) { log('FATAL ' + (e && e.message)); }
+})();
+</script>
